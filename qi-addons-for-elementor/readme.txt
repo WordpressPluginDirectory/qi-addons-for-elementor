@@ -4,7 +4,7 @@ Tags: elementor, elementor addons, elementor widgets, elementor elements, addons
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 1.6.6
+Stable tag: 1.6.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,11 +12,11 @@ Qi Addons for Elementor is a comprehensive library of 60+ custom, flexible & eas
 
 == Description ==
 
-<a href="https://qodeinteractive.com/qi-addons-for-elementor/" target="_blank">Qi Addons for Elementor</a> is the largest free library of custom and fully flexible Elementor widgets developed by one of bestselling premium WordPress theme authors, the award-winning <a href="https://qodeinteractive.com/" target="_blank">Qode Interactive</a>. The free version of Qi Addons comes with 60+ powerful custom widgets for Elementor, while <a href="https://qodeinteractive.com/qi-addons-for-elementor/" target="_blank">Qi Addons for Elementor Premium</a> gives you a stunning selection of 100+ carefully designed, comprehensive widgets. All elements bundled with this plugin were designed with ease of use and customizability in mind. As with all our products, we put special emphasis on design and the aesthetic side of things.
+<a href="https://qodeinteractive.com/qi-addons-for-elementor/" target="_blank">Qi Addons for Elementor</a> is the largest free library of custom and fully flexible Elementor widgets developed by one of bestselling premium WordPress theme authors, the award-winning <a href="https://qodeinteractive.com/" target="_blank">Qode Interactive</a>. The free version of Qi Addons comes with 60+ powerful custom widgets for Elementor, while <a href="https://qodeinteractive.com/qi-addons-for-elementor/" target="_blank">Qi Addons for Elementor Premium</a> gives you a stunning selection of 100+ carefully designed, comprehensive Elementor addons. All elements bundled with this plugin were designed with ease of use and customizability in mind. As with all our products, we put special emphasis on design and the aesthetic side of things.
 
 <a href="https://qodeinteractive.com/qi-addons-for-elementor/" target="_blank">Qi Addons for Elementor</a> provide you with a powerful, simple and streamlined way to create your captivating new website with the Elementor Page Builder the way you envisioned it.
 
-<h3>THE LARGEST FREE COLLECTION OF ELEMENTOR WIDGETS</h3>
+<h3>THE LARGEST FREE COLLECTION OF ELEMENTOR ADDONS</h3>
 Not only do you get one of the largest widget collections for free, but every element was designed to let you create a wide range of diverse, beautifully designed sections for your pages without any effort or coding involved. On top of that, you can upgrade to <a href="https://qodeinteractive.com/qi-addons-for-elementor/" target="_blank">Qi Addons for Elementor Premium</a>, and get 100+ powerful custom widgets.
 
 <h3>CUSTOMIZE WITH TOTAL EASE</h3>
@@ -186,6 +186,7 @@ Your new, beautifully designed website is right at your fingertips thanks to Qi 
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/intro-scrolling-images/" target="_blank">Intro Scrolling Images</a> - Easily display intro sections with text & scrolling images</li>
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/horizontal-double-row-projects/" target="_blank">Horizontal Double Row</a> - Create appealing horizontally scrolling image showcases aligned in two rows.</li>
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/flip-box/" target="_blank">Flip Box</a> - Display easily configurable interactive two-sided boxes containing your content, with some transition animations applied.</li>
+    <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/news-ticker/" target="_blank">News Ticker</a> - A custom widget that allows you to easily display headlines or pieces of news in horizontally laid out, automatically scrolling crawler elements.</li>
 </ul>
 
 <h4>Premium Infographics Addons:</h4>
@@ -321,6 +322,9 @@ From wordpress.org
 
 
 == Changelog ==
+
+= 1.6.7 - 22-01-2024 =
+- Minor changes
 
 = 1.6.6 - 24-11-2023 =
 - Fixed list tag bug for 'Pricing List' widget
