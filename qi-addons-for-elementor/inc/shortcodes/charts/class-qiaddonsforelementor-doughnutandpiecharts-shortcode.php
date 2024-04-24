@@ -1,5 +1,10 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	// Exit if accessed directly.
+	exit;
+}
+
 if ( ! function_exists( 'qi_addons_for_elementor_add_charts_shortcode' ) ) {
 	/**
 	 * Function that add shortcode into shortcodes list for registration
@@ -184,7 +189,7 @@ if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 						'px' => array(
 							'min'  => 0,
 							'max'  => 5,
-							'step' => 0.1
+							'step' => 0.,
 						),
 					),
 					'group'      => esc_html__( 'Chart Style', 'qi-addons-for-elementor' ),
@@ -473,7 +478,7 @@ if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 			$temp['data-type']         = 'pie' === $atts['chart_type'];
 			$temp['data-aspect-ratio'] = ! empty( $atts['chart_aspect_ratio']['size'] ) ? $atts['chart_aspect_ratio']['size'] : 1;
 
-			$temp['data-enable-legend']            = ( 'yes' === $atts['enable_chart_legend'] ) ? true : false;
+			$temp['data-enable-legend']            = 'yes' === $atts['enable_chart_legend'];
 			$temp['data-legend-position']          = ! empty( $atts['legend_position'] ) ? $atts['legend_position'] : 'top';
 			$temp['data-legend-alignment']         = ! empty( $atts['legend_alignment'] ) ? $atts['legend_alignment'] : '';
 			$temp['data-legend-bar-width']         = ! empty( $atts['legend_bar_width']['size'] ) ? intval( $atts['legend_bar_width']['size'] ) : '';
@@ -486,7 +491,7 @@ if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 
 			foreach ( $temp as $key => $value ) {
 				if ( is_array( $value ) || is_bool( $value ) ) {
-					$data[ $key ] = json_encode( $value );
+					$data[ $key ] = wp_json_encode( $value );
 				} else {
 					$data[ $key ] = $value;
 				}
