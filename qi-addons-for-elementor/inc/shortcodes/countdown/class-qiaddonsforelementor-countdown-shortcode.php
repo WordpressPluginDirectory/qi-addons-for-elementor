@@ -36,7 +36,7 @@ if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 			$this->set_base( 'qi_addons_for_elementor_countdown' );
 			$this->set_name( esc_html__( 'Countdown', 'qi-addons-for-elementor' ) );
 			$this->set_description( esc_html__( 'Shortcode that displays countdown with provided parameters', 'qi-addons-for-elementor' ) );
-			$this->set_category( esc_html__( 'Qi Addons For Elementor', 'qi-addons-for-elementor' ) );
+			$this->set_category( esc_html__( 'Qi Addons for Elementor', 'qi-addons-for-elementor' ) );
 			$this->set_subcategory( esc_html__( 'Showcase', 'qi-addons-for-elementor' ) );
 			$this->set_demo( 'https://qodeinteractive.com/qi-addons-for-elementor/countdown/' );
 			$this->set_documentation( 'https://qodeinteractive.com/qi-addons-for-elementor/documentation/#countdown' );
@@ -420,15 +420,17 @@ if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 				),
 			);
 
+			// Strips all not allowed characters from input.
+			$available_characters = '/[^\w\_\-\'\"]/u';
 			foreach ( $date_formats as $key => $value ) {
 				if ( ! empty( $atts[ $key . '_label' ] ) ) {
-					$data[ 'data-' . $key . '-label' ] = sanitize_title( $atts[ $key . '_label' ] );
+					$data[ 'data-' . $key . '-label' ] = preg_replace( $available_characters, '', $atts[ $key . '_label' ] );
 				} else {
 					$data[ 'data-' . $key . '-label' ] = $value['default'];
 				}
 
 				if ( ! empty( $atts[ $key . '_label_plural' ] ) ) {
-					$data[ 'data-' . $key . '-label-plural' ] = sanitize_title( $atts[ $key . '_label_plural' ] );
+					$data[ 'data-' . $key . '-label-plural' ] = preg_replace( $available_characters, '', $atts[ $key . '_label_plural' ] );
 				} else {
 					$data[ 'data-' . $key . '-label-plural' ] = $value['plural'];
 				}
