@@ -25,6 +25,10 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_progress_bar_horizontal_sho
 if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 	class QiAddonsForElementor_Progress_Bar_Horizontal_Shortcode extends QiAddonsForElementor_Shortcode {
 
+		protected function is_dynamic_content(): bool {
+			return false;
+		}
+
 		public function map_shortcode() {
 			$this->set_shortcode_path( QI_ADDONS_FOR_ELEMENTOR_SHORTCODES_URL_PATH . '/progress-bar-horizontal' );
 			$this->set_base( 'qi_addons_for_elementor_progress_bar_horizontal' );

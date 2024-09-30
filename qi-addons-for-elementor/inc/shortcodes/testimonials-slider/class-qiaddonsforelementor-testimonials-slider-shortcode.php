@@ -25,6 +25,10 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_testimonials_slider_shortco
 if ( class_exists( 'QiAddonsForElementor_Slider_Shortcode' ) ) {
 	class QiAddonsForElementor_Testimonials_Slider_Shortcode extends QiAddonsForElementor_Slider_Shortcode {
 
+		protected function is_dynamic_content(): bool {
+			return false;
+		}
+
 		public function __construct() {
 			$this->set_layouts( apply_filters( 'qi_addons_for_elementor_filter_testimonials_slider_layouts', array() ) );
 			$this->set_extra_options( apply_filters( 'qi_addons_for_elementor_filter_testimonials_slider_extra_options', array() ) );

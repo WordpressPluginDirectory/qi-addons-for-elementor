@@ -25,6 +25,10 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_how_to_shortcode' ) ) {
 if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 	class QiAddonsForElementor_How_To_Shortcode extends QiAddonsForElementor_Shortcode {
 
+		protected function is_dynamic_content(): bool {
+			return false;
+		}
+
 		public function map_shortcode() {
 			$this->set_shortcode_path( QI_ADDONS_FOR_ELEMENTOR_SHORTCODES_URL_PATH . '/how-to' );
 			$this->set_base( 'qi_addons_for_elementor_how_to' );

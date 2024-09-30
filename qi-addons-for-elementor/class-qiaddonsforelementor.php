@@ -5,10 +5,10 @@
  * Author: Qode Interactive
  * Author URI: https://qodeinteractive.com/
  * Plugin URI: https://qodeinteractive.com/qi-addons-for-elementor/
- * Version: 1.7.8
+ * Version: 1.8.0
  * Text Domain: qi-addons-for-elementor
- * Elementor tested up to: 3.23.4
- * Elementor Pro tested up to: 3.23.3
+ * Elementor tested up to: 3.24.4
+ * Elementor Pro tested up to: 3.24.2
  */
 
 if ( ! class_exists( 'QiAddonsForElementor' ) ) {
@@ -50,7 +50,7 @@ if ( ! class_exists( 'QiAddonsForElementor' ) ) {
 
 			// Include plugin assets.
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'register_additional_assets' ), 5 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'register_additional_assets' ) );
 			// priority 11 is because of swiper initialization bug, this script needs to be loaded after 'elementor-frontend' css ( which is loaded on priority 10 ).
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_additional_assets' ), 11 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_inline_style' ), 15 );
@@ -135,6 +135,8 @@ if ( ! class_exists( 'QiAddonsForElementor' ) ) {
 		}
 
 		public function register_additional_assets() {
+			// beacuse Elementor is forcing it's style to be loaded.
+			wp_deregister_style( 'swiper' );
 			wp_register_style( 'swiper', QI_ADDONS_FOR_ELEMENTOR_URL_PATH . 'assets/plugins/swiper/' . $this->swiper_version . '/swiper.min.css' );
 		}
 

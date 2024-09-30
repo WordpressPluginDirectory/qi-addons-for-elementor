@@ -25,6 +25,10 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_tabs_horizontal_shortcode' 
 if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 	class QiAddonsForElementor_Tabs_Horizontal_Shortcode extends QiAddonsForElementor_Shortcode {
 
+		protected function is_dynamic_content(): bool {
+			return false;
+		}
+
 		public function __construct() {
 			$this->set_layouts( apply_filters( 'qi_addons_for_elementor_filter_tabs_horizontal_layouts', array() ) );
 

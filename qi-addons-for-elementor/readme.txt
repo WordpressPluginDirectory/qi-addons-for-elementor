@@ -4,7 +4,7 @@ Tags: elementor, elementor addons, elementor widgets, elementor elements, addons
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 5.6
-Stable tag: 1.7.8
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,7 @@ https://www.youtube.com/watch?v=WT8ngVYlJ_0&list=PLNypD600o6nK_5QYh--5K6B0ObmgVt
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/rotating-image-tiles/" target="_blank">Rotating Image Tiles</a> - Compose animated presentations with four images divided into a specific number of rotating tiles</li>
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/interactive-info-images/" target="_blank">Interactive Info Images</a> - Allows you to display animated image panels which reveal informative textual content on hover</li>
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/image-hotspots/" target="_blank">Image Hotspots</a> - Create image showcases with interactive hotspots with info reveal on hover</li>
+    <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/elementor-dual-image-carousel-widget/" target="_blank">Dual Image Carousel</a> - Craft visually striking two-image animated carousel showcase sections</li>
 </ul>
 
 <h4>Premium Creative Addons:</h4>
@@ -290,6 +291,10 @@ Another thing you can do is navigate to Elementor > Tools, and click the Regener
 
 Yes. The plugin is fully compatible with the WPML plugin, which allows you to create multilingual websites with ease.
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/qi-addons-for-elementor)
+
 == Installation ==
 
 = Minimum Requirements =
@@ -337,6 +342,12 @@ From wordpress.org
 
 
 == Changelog ==
+
+= 1.8.0 - 30-09-2024 =
+- Added compatibility with Elementor Widget Caching
+- Improved Cross Site Scripting (XSS) vulnerability
+- Solved conflict with Elementor Pro page transition and Image Slider Lightbox
+- Minor improvements
 
 = 1.7.8 - 14-08-2024 =
 - Added option to choose Swiper Library Version (v5/v8) in 'Qi Addons for Elementor > Settings' tab

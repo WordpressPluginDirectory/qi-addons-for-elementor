@@ -25,6 +25,10 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_table_of_contents_shortcode
 if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 	class QiAddonsForElementor_Table_Of_Contents_Shortcode extends QiAddonsForElementor_Shortcode {
 
+		protected function is_dynamic_content(): bool {
+			return false;
+		}
+
 		public function map_shortcode() {
 			$this->set_shortcode_path( QI_ADDONS_FOR_ELEMENTOR_SHORTCODES_URL_PATH . '/table-of-contents' );
 			$this->set_base( 'qi_addons_for_elementor_table_of_contents' );

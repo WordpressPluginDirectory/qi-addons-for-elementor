@@ -25,6 +25,10 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_process_shortcode' ) ) {
 if ( class_exists( 'QiAddonsForElementor_List_Shortcode' ) ) {
 	class QiAddonsForElementor_Process_Shortcode extends QiAddonsForElementor_List_Shortcode {
 
+		protected function is_dynamic_content(): bool {
+			return false;
+		}
+
 		public function __construct() {
 			$this->set_layouts( apply_filters( 'qi_addons_for_elementor_filter_process_layouts', array() ) );
 			$this->set_extra_options( apply_filters( 'qi_addons_for_elementor_filter_process_extra_options', array() ) );

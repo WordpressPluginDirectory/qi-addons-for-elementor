@@ -25,6 +25,10 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_business_hours_list_shortco
 if ( class_exists( 'QiAddonsForElementor_Shortcode' ) ) {
 	class QiAddonsForElementor_Business_Hours_Shortcode extends QiAddonsForElementor_Shortcode {
 
+		protected function is_dynamic_content(): bool {
+			return false;
+		}
+
 		public function __construct() {
 			$this->set_layouts( apply_filters( 'qi_addons_for_elementor_filter_business_hours_layouts', array() ) );
 
