@@ -686,7 +686,7 @@ if ( ! function_exists( 'qi_addons_for_elementor_promotion_shortcodes_inline_sty
 		if ( ! empty( $shortcodes ) && is_array( $shortcodes ) ) {
 			foreach ( $shortcodes as $key => $shortcode ) {
 
-				$icon_path = QI_ADDONS_FOR_ELEMENTOR_ADMIN_URL_PATH . '/inc/shortcodes/promotion-shortcodes/assets/img/' . strtolower( str_replace( ' ', '-', $shortcode['title'] ) ) . '.png';
+				$icon_path = QI_ADDONS_FOR_ELEMENTOR_ADMIN_URL_PATH . '/inc/shortcodes/promotion-shortcodes/assets/img/' . strtolower( str_replace( ' ', '-', $shortcode['base'] ) ) . '.png';
 
 				$style .= '.qodef-custom-elementor-icon.' . str_replace( '_', '-', $key ) . '{
 						background-image: url("' . $icon_path . '") !important;

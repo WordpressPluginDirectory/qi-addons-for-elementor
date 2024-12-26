@@ -72,6 +72,13 @@ if ( class_exists( 'QiAddonsForElementor_List_Shortcode' ) ) {
 			);
 			$this->set_option(
 				array(
+					'field_type' => 'checkbox',
+					'name'       => 'disable_lazy_loading',
+					'title'      => esc_html__( 'Disable Lazy Load for images', 'qi-addons-for-elementor' ),
+				)
+			);
+			$this->set_option(
+				array(
 					'field_type'    => 'select',
 					'name'          => 'enable_custom_links',
 					'title'         => esc_html__( 'Enable Custom Links', 'qi-addons-for-elementor' ),

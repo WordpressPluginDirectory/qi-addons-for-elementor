@@ -22,7 +22,8 @@ class QiAddonsForElementor_Elementor_Section_Handler {
 
 	public function enqueue_scripts() {
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters
-		wp_enqueue_script( 'qi-addons-for-elementor-elementor', QI_ADDONS_FOR_ELEMENTOR_PLUGINS_URL_PATH . '/elementor/assets/js/elementor.js', array( 'jquery', 'elementor-frontend', 'wp-i18n' ) );
+		// script is loading in footer since there may be some issue with swiper sliders and other themes/plugins when user is logged in and view frontend, some background sliders are not working.
+		wp_enqueue_script( 'qi-addons-for-elementor-elementor', QI_ADDONS_FOR_ELEMENTOR_PLUGINS_URL_PATH . '/elementor/assets/js/elementor.js', array( 'jquery', 'elementor-frontend', 'wp-i18n' ), '', true );
 	}
 }
 

@@ -16,11 +16,13 @@ if ( ! function_exists( 'qi_addons_for_elementor_get_list_shortcode_item_image' 
 	 *
 	 * @see qi_addons_for_elementor_framework_generate_thumbnail()
 	 */
-	function qi_addons_for_elementor_get_list_shortcode_item_image( $image_dimension = 'full', $attachment_id = 0, $custom_image_width = 0, $custom_image_height = 0 ) {
+	function qi_addons_for_elementor_get_list_shortcode_item_image( $image_dimension = 'full', $attachment_id = 0, $custom_image_width = 0, $custom_image_height = 0, $disable_lazy_loading = '' ) {
 		$item_id = get_the_ID();
+		$attr    = array();
 		if ( 'custom' !== $image_dimension ) {
 			if ( ! empty( $attachment_id ) ) {
-				$html = qi_addons_for_elementor_get_attachment_image( $attachment_id, $image_dimension );
+				$attr['loading'] = 'yes' == $disable_lazy_loading ? 'eager' : '';
+				$html            = qi_addons_for_elementor_get_attachment_image( $attachment_id, $image_dimension, false, $attr );
 			} else {
 				$html = get_the_post_thumbnail( $item_id, $image_dimension );
 			}

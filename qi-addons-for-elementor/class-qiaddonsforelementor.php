@@ -5,10 +5,10 @@
  * Author: Qode Interactive
  * Author URI: https://qodeinteractive.com/
  * Plugin URI: https://qodeinteractive.com/qi-addons-for-elementor/
- * Version: 1.8.1
+ * Version: 1.8.3
  * Text Domain: qi-addons-for-elementor
- * Elementor tested up to: 3.24.7
- * Elementor Pro tested up to: 3.24.4
+ * Elementor tested up to: 3.26.3
+ * Elementor Pro tested up to: 3.26.2
  */
 
 if ( ! class_exists( 'QiAddonsForElementor' ) ) {
@@ -103,6 +103,8 @@ if ( ! class_exists( 'QiAddonsForElementor' ) ) {
 			wp_enqueue_script( 'jquery-ui-core' );
 			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 			wp_register_script( 'fslightbox', QI_ADDONS_FOR_ELEMENTOR_URL_PATH . 'assets/plugins/fslightbox/fslightbox.min.js', array(), false, true );
+			// because Elementor is forcing it's script to be loaded.
+			wp_deregister_script( 'swiper' );
 			wp_register_script( 'swiper', QI_ADDONS_FOR_ELEMENTOR_URL_PATH . 'assets/plugins/swiper/' . $this->swiper_version . '/swiper.min.js', array( 'jquery' ), '', true );
 
 			// Hook to include additional scripts before plugin's main script.
@@ -135,7 +137,7 @@ if ( ! class_exists( 'QiAddonsForElementor' ) ) {
 		}
 
 		public function register_additional_assets() {
-			// beacuse Elementor is forcing it's style to be loaded.
+			// because Elementor is forcing it's style to be loaded.
 			wp_deregister_style( 'swiper' );
 			wp_register_style( 'swiper', QI_ADDONS_FOR_ELEMENTOR_URL_PATH . 'assets/plugins/swiper/' . $this->swiper_version . '/swiper.min.css' );
 		}
@@ -210,21 +212,17 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_placeholder_image' ) ) {
 
 			$upload_dir = wp_upload_dir();
 			$source     = QI_ADDONS_FOR_ELEMENTOR_URL_PATH . 'assets/img/placeholder.png';
-			$filename   = 'qi-addons-for-elementor-placeholder.png';
+			$filename   = $upload_dir['basedir'] . '/qi-addons-for-elementor-placeholder.png';
 
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			$image_data = file_get_contents( $source );
-
-			if ( wp_mkdir_p( $upload_dir['path'] ) ) {
-				$file = $upload_dir['path'] . '/' . $filename;
-			} else {
-				$file = $upload_dir['basedir'] . '/' . $filename;
+			if ( ! file_exists( $filename ) ) {
+				copy( $source, $filename ); // @codingStandardsIgnoreLine.
 			}
 
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-			file_put_contents( $file, $image_data );
+			if ( ! file_exists( $filename ) ) {
+				return;
+			}
 
-			$filetype   = wp_check_filetype( $filename, null );
+			$filetype   = wp_check_filetype( basename( $filename ), null );
 			$attachment = array(
 				'guid'           => $upload_dir['url'] . '/' . basename( $filename ),
 				'post_mime_type' => $filetype['type'],
@@ -232,7 +230,7 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_placeholder_image' ) ) {
 				'post_content'   => '',
 				'post_status'    => 'inherit',
 			);
-			$attach_id  = wp_insert_attachment( $attachment, $file );
+			$attach_id  = wp_insert_attachment( $attachment, $filename );
 
 			if ( is_int( $attach_id ) && 0 !== $attach_id ) {
 				update_option(
@@ -247,7 +245,7 @@ if ( ! function_exists( 'qi_addons_for_elementor_add_placeholder_image' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/image.php';
 
 				// Generate the metadata for the attachment, and update the database record.
-				$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+				$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
 				wp_update_attachment_metadata( $attach_id, $attach_data );
 			}
 		}

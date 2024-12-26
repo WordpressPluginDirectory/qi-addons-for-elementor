@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Qi Addons for Elementor plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Qi Addons for Elementor 1.8.1\n"
+"Project-Id-Version: Qi Addons for Elementor 1.8.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qi-addons-for-elementor\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-17T07:36:34+00:00\n"
+"POT-Creation-Date: 2024-12-25T14:15:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: qi-addons-for-elementor\n"
@@ -105,7 +105,7 @@ msgstr ""
 msgid "https://qodeinteractive.com/"
 msgstr ""
 
-#: class-qiaddonsforelementor.php:278
+#: class-qiaddonsforelementor.php:276
 msgid "Elementor plugin is required for Qi Addons for Elementor plugin to work properly. Please install/activate it first."
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 #: inc/shortcodes/class-qiaddonsforelementor-slider-shortcode.php:1453
 #: inc/shortcodes/dual-image-with-content/class-qiaddonsforelementor-dual-image-with-content-shortcode.php:177
 #: inc/shortcodes/graphs/class-qiaddonsforelementor-graphs-shortcode.php:203
-#: inc/shortcodes/helper.php:108
+#: inc/shortcodes/helper.php:110
 #: inc/shortcodes/parallax-images/variations/default/helper.php:17
 #: inc/shortcodes/separator/class-qiaddonsforelementor-separator-shortcode.php:75
 #: inc/shortcodes/text-marquee/variations/default/helper.php:17
@@ -289,7 +289,7 @@ msgstr ""
 #: inc/shortcodes/icon-with-text/class-qiaddonsforelementor-icon-with-text-shortcode.php:424
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:139
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:158
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:174
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:181
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:207
 #: inc/shortcodes/info-button/class-qiaddonsforelementor-info-button-shortcode.php:484
 #: inc/shortcodes/pricing-table/class-qiaddonsforelementor-pricing-table-shortcode.php:454
@@ -573,7 +573,7 @@ msgstr ""
 #: inc/shortcodes/graphs/class-qiaddonsforelementor-graphs-shortcode.php:190
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:155
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:174
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:190
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:197
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:226
 #: inc/shortcodes/info-button/class-qiaddonsforelementor-info-button-shortcode.php:341
 #: inc/shortcodes/interactive-link-showcase/class-qiaddonsforelementor-interactive-link-showcase-shortcode.php:129
@@ -607,7 +607,7 @@ msgstr ""
 #: inc/shortcodes/graphs/class-qiaddonsforelementor-graphs-shortcode.php:205
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:152
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:171
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:187
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:194
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:223
 #: inc/shortcodes/interactive-link-showcase/variations/background/helper.php:35
 #: inc/shortcodes/separator/class-qiaddonsforelementor-separator-shortcode.php:76
@@ -633,7 +633,7 @@ msgstr ""
 #: inc/shortcodes/graphs/class-qiaddonsforelementor-graphs-shortcode.php:192
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:156
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:175
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:191
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:198
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:227
 #: inc/shortcodes/info-button/class-qiaddonsforelementor-info-button-shortcode.php:342
 #: inc/shortcodes/interactive-link-showcase/class-qiaddonsforelementor-interactive-link-showcase-shortcode.php:130
@@ -2463,7 +2463,7 @@ msgstr ""
 #: inc/plugins/woocommerce/shortcodes/product-category-list/class-qiaddonsforelementor-product-category-list-shortcode.php:184
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:131
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:150
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:166
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:173
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:202
 #: inc/shortcodes/team-member/class-qiaddonsforelementor-team-member-shortcode.php:253
 msgid "Image Hover"
@@ -2477,7 +2477,7 @@ msgstr ""
 #: inc/shortcodes/banner/class-qiaddonsforelementor-banner-shortcode.php:440
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:136
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:155
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:171
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:178
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:208
 msgid "Zoom In"
 msgstr ""
@@ -2490,7 +2490,7 @@ msgstr ""
 #: inc/shortcodes/banner/class-qiaddonsforelementor-banner-shortcode.php:441
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:137
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:156
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:172
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:179
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:209
 msgid "Zoom Out"
 msgstr ""
@@ -2503,7 +2503,7 @@ msgstr ""
 #: inc/shortcodes/banner/class-qiaddonsforelementor-banner-shortcode.php:442
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:138
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:157
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:173
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:180
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:210
 msgid "Move"
 msgstr ""
@@ -2513,7 +2513,7 @@ msgstr ""
 #: inc/plugins/woocommerce/shortcodes/product-category-list/class-qiaddonsforelementor-product-category-list-shortcode.php:199
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:149
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:168
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:184
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:191
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:220
 msgid "Image Hover Zoom Origin"
 msgstr ""
@@ -2534,7 +2534,7 @@ msgstr ""
 #: inc/shortcodes/icon-with-text/variations/top/helper.php:17
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:153
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:172
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:188
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:195
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:224
 #: inc/shortcodes/info-cards/class-qiaddonsforelementor-info-cards-shortcode.php:144
 #: inc/shortcodes/info-cards/variations/top/helper.php:17
@@ -2559,7 +2559,7 @@ msgstr ""
 #: inc/shortcodes/graphs/class-qiaddonsforelementor-graphs-shortcode.php:191
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:154
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:173
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:189
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:196
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:225
 #: inc/shortcodes/info-cards/class-qiaddonsforelementor-info-cards-shortcode.php:146
 #: inc/shortcodes/message-box/class-qiaddonsforelementor-message-box-shortcode.php:157
@@ -2578,7 +2578,7 @@ msgstr ""
 #: inc/shortcodes/banner/class-qiaddonsforelementor-banner-shortcode.php:395
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:173
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:192
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:208
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:215
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:244
 #: inc/shortcodes/interactive-banner/class-qiaddonsforelementor-interactive-banner-shortcode.php:382
 msgid "Overlay Color"
@@ -2592,7 +2592,7 @@ msgstr ""
 #: inc/shortcodes/banner/class-qiaddonsforelementor-banner-shortcode.php:425
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:185
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:204
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:220
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:227
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:256
 #: inc/shortcodes/interactive-banner/class-qiaddonsforelementor-interactive-banner-shortcode.php:412
 msgid "Overlay Hover Color"
@@ -3953,7 +3953,7 @@ msgstr ""
 
 #: inc/plugins/woocommerce/shortcodes/product-category-list/class-qiaddonsforelementor-product-category-list-shortcode.php:223
 #: inc/shortcodes/button/class-qiaddonsforelementor-button-shortcode.php:344
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:152
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:159
 #: inc/shortcodes/info-button/class-qiaddonsforelementor-info-button-shortcode.php:300
 #: inc/shortcodes/info-cards/class-qiaddonsforelementor-info-cards-shortcode.php:171
 #: inc/shortcodes/pricing-table/class-qiaddonsforelementor-pricing-table-shortcode.php:116
@@ -7401,14 +7401,14 @@ msgstr ""
 #: inc/shortcodes/device-slider/class-qiaddonsforelementor-device-slider-shortcode.php:132
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:94
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:76
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:77
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:84
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:122
 msgid "Enable Custom Links"
 msgstr ""
 
 #: inc/shortcodes/device-slider/class-qiaddonsforelementor-device-slider-shortcode.php:143
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:87
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:88
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:95
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:133
 msgid "Custom Links"
 msgstr ""
@@ -7950,7 +7950,7 @@ msgstr ""
 msgid "Step Size"
 msgstr ""
 
-#: inc/shortcodes/helper.php:156
+#: inc/shortcodes/helper.php:158
 msgid "Select"
 msgstr ""
 
@@ -8194,17 +8194,17 @@ msgstr ""
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:117
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:135
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:143
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:80
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:99
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:118
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:136
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:144
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:87
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:106
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:125
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:143
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:151
 msgid "Gallery Settings"
 msgstr ""
 
 #: inc/shortcodes/image-gallery-masonry/class-qiaddonsforelementor-image-gallery-masonry-shortcode.php:105
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:125
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:126
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:133
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:171
 msgid "Enable Lightbox Popup"
 msgstr ""
@@ -8217,11 +8217,11 @@ msgstr ""
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:169
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:193
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:205
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:158
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:167
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:185
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:209
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:221
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:165
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:174
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:192
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:216
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:228
 msgid "Gallery Style"
 msgstr ""
 
@@ -8234,13 +8234,13 @@ msgid "Shortcode that adds pinterest image gallery element"
 msgstr ""
 
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:88
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:89
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:96
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:134
 msgid "Enter links for gallery images, separated by comma"
 msgstr ""
 
 #: inc/shortcodes/image-gallery-pinterest/class-qiaddonsforelementor-image-gallery-pinterest-shortcode.php:106
-#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:107
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:114
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:152
 msgid "Custom Links Target"
 msgstr ""
@@ -8251,6 +8251,10 @@ msgstr ""
 
 #: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:42
 msgid "Shortcode that adds image gallery element"
+msgstr ""
+
+#: inc/shortcodes/image-gallery/class-qiaddonsforelementor-image-gallery-shortcode.php:77
+msgid "Disable Lazy Load for images"
 msgstr ""
 
 #: inc/shortcodes/image-slider/class-qiaddonsforelementor-image-slider-shortcode.php:42

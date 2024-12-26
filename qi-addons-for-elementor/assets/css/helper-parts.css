@@ -834,7 +834,7 @@ body:not(.elementor-editor-active) .qodef-landing-intro-title.qodef-qi--appeared
 	transform: translate3d(0, -100%, 0);
 }
 
-.qodef-navigation-together--top .elementor-widget-container {
+.qodef-navigation-together--top:has(.elementor-widget-container) .elementor-widget-container, .qodef-navigation-together--top:not(:has(.elementor-widget-container)) {
 	position: relative;
 }
 
@@ -844,6 +844,6 @@ body:not(.elementor-editor-active) .qodef-landing-intro-title.qodef-qi--appeared
 	margin-bottom: 30px;
 }
 
-.qodef-navigation-together--bottom .elementor-widget-container {
+.qodef-navigation-together--bottom:has(.elementor-widget-container) .elementor-widget-container, .qodef-navigation-together--bottom:not(:has(.elementor-widget-container)) {
 	position: relative;
 }
