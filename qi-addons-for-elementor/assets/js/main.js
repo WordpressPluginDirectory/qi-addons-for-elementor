@@ -902,6 +902,65 @@
 (function ( $ ) {
 	'use strict';
 
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text = {};
+
+	$( document ).ready(
+		function () {
+			qodefAnimatedText.init();
+		}
+	);
+
+	var qodefAnimatedText = {
+		init: function () {
+			this.holder = $( '.qodef-qi-animated-text.qodef--animated-by-letter' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefAnimatedText.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			var $words = $currentItem.find( '.qodef-e-word-holder' );
+
+			$words.each(
+				function () {
+					var $word       = $( this ).text(),
+						$wordCount	= $word.length,
+						$split_word = ''
+
+					for (var i = 0; i < $wordCount; i++) {
+						$split_word += '<span class="qodef-e-character">' + $word.charAt( i ) + '</span>';
+					}
+
+					$( this ).html( $split_word );
+				}
+			);
+
+			var $characters = $currentItem.find( '.qodef-e-character' );
+
+			$characters.each(
+				function (index) {
+					var $character         = $( this ),
+						transitionModifier = $currentItem.hasClass( 'qodef--appear-from-left' ) ? 40 : 60,
+						transitionDelay    = (index * transitionModifier) + 'ms';
+
+					$character.css( 'transition-delay', transitionDelay );
+				}
+			);
+		},
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAppear       = qodefAddonsCore.qodefAppear;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAnimatedText = qodefAnimatedText;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_accordion = {};
 
 	$( document ).ready(
@@ -979,65 +1038,6 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_accordion.qodefAccordion = qodefAccordion;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text = {};
-
-	$( document ).ready(
-		function () {
-			qodefAnimatedText.init();
-		}
-	);
-
-	var qodefAnimatedText = {
-		init: function () {
-			this.holder = $( '.qodef-qi-animated-text.qodef--animated-by-letter' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefAnimatedText.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			var $words = $currentItem.find( '.qodef-e-word-holder' );
-
-			$words.each(
-				function () {
-					var $word       = $( this ).text(),
-						$wordCount	= $word.length,
-						$split_word = ''
-
-					for (var i = 0; i < $wordCount; i++) {
-						$split_word += '<span class="qodef-e-character">' + $word.charAt( i ) + '</span>';
-					}
-
-					$( this ).html( $split_word );
-				}
-			);
-
-			var $characters = $currentItem.find( '.qodef-e-character' );
-
-			$characters.each(
-				function (index) {
-					var $character         = $( this ),
-						transitionModifier = $currentItem.hasClass( 'qodef--appear-from-left' ) ? 40 : 60,
-						transitionDelay    = (index * transitionModifier) + 'ms';
-
-					$character.css( 'transition-delay', transitionDelay );
-				}
-			);
-		},
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAppear       = qodefAddonsCore.qodefAppear;
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAnimatedText = qodefAnimatedText;
 
 })( jQuery );
 
@@ -1307,6 +1307,198 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_cards_gallery.qodefCardsGallery = qodefCardsGallery;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_cards_slider = {};
+
+	$( document ).ready(
+		function () {
+			qodefCardsSlider.init();
+		}
+	);
+
+	var qodefCardsSlider = {
+		init: function () {
+			this.holder = $( '.qodef-qi-cards-slider' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefCardsSlider.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $holder ) {
+			qodefCardsSlider.sliderLoop( $holder );
+		},
+		isInView: function ( $holder ) {
+			// When item is 15% in the viewport.
+			var offset   = 0.15;
+			var observer = new IntersectionObserver(
+				function ( entries ) {
+					// isIntersecting is true when element and viewport are overlapping.
+					// isIntersecting is false when element and viewport don't overlap.
+					if ( entries[0].isIntersecting === true ) {
+						$holder.addClass( 'qodef-in-view' );
+					} else {
+						$holder.removeClass( 'qodef-in-view' );
+					}
+				},
+				{ threshold: [offset] }
+			);
+			observer.observe( $holder[0] );
+			document.addEventListener(
+				'visibilitychange',
+				function () {
+					if ( document.visibilityState === 'visible' ) {
+						$holder.addClass( 'qodef-in-view' );
+					} else {
+						$holder.removeClass( 'qodef-in-view' );
+					}
+				}
+			);
+		},
+		sliderLoop: function ( $holder, isPaused ) {
+			var $cards      = $holder.find( '.qodef-m-card' ),
+				orientation = $holder.data( 'orientation' ),
+				$navNext    = $holder.find( '.qodef--next' ),
+				$navPrev    = $holder.find( '.qodef--prev' ),
+				marginValue,
+				loopInterval;
+
+			switch (orientation) {
+				case 'left':
+					marginValue = '-10%';
+					break;
+				case 'right':
+					marginValue = '10%';
+					break;
+			}
+
+			// without opacity.
+			function nextItem() {
+				var $currentCard = $cards.last(),
+					$lastCard    = $cards.first();
+
+				if ( ! $currentCard.hasClass( 'qodef-out' ) ) {
+					$currentCard.addClass( 'qodef-out' ).animate(
+						{
+							right: marginValue
+						},
+						350,
+						'swing',
+						function () {
+							$currentCard.detach().insertBefore( $lastCard ).animate(
+								{
+									right: '0%'
+								},
+								450,
+								'swing',
+								function () {
+									setTimeout(
+										function () {
+											$currentCard.removeClass( 'qodef-out' );
+										},
+										10
+									);
+								}
+							);
+							$cards = $holder.find( '.qodef-m-card' );
+						}
+					);
+				}
+			}
+
+			function prevItem() {
+				var $currentCard = $cards.last(),
+					$lastCard    = $cards.first();
+
+				if ( ! $lastCard.hasClass( 'qodef-in' ) ) {
+					$holder.addClass( 'qodef-backwards' );
+					$lastCard.addClass( 'qodef-in' ).animate(
+						{
+							right: marginValue
+						},
+						350,
+						'swing',
+						function () {
+							$lastCard.detach().insertAfter( $currentCard ).animate(
+								{
+									right: '0'
+								},
+								450,
+								'swing',
+								function () {
+									$lastCard.removeClass( 'qodef-in' );
+									$holder.removeClass( 'qodef-backwards' );
+								}
+							);
+							$cards = $holder.find( '.qodef-m-card' );
+						}
+					);
+				}
+			}
+
+			loopInterval = setInterval(
+				function () {
+					if ( ! isPaused && $holder.hasClass( 'qodef-in-view' ) ) {
+						nextItem();
+					}
+				},
+				3000
+			);
+
+			qodefCardsSlider.isInView( $holder );
+
+			if ( qodefAddonsCore.windowWidth > 1024 ) {
+				$holder.on(
+					'mouseenter',
+					function () {
+						isPaused = true;
+					}
+				).on(
+					'mouseleave',
+					function () {
+						isPaused = false;
+					}
+				);
+			} else {
+				$holder.on(
+					'touchstart',
+					function () {
+						isPaused = true;
+					}
+				).on(
+					'touchend',
+					function () {
+						setTimeout(
+							function () {
+								isPaused = false;
+							},
+							2000
+						);
+					}
+				);
+			}
+
+			$navNext.on(
+				'click',
+				nextItem
+			);
+
+			$navPrev.on(
+				'click',
+				prevItem
+			);
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_cards_slider.qodefCardsSlider = qodefCardsSlider;
 
 })( jQuery );
 
@@ -1717,6 +1909,14 @@
 (function ( $ ) {
 	'use strict';
 
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider             = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_carousel = {};
 
 	$( document ).ready(
@@ -1818,14 +2018,6 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_faq.qodefFAQ = qodefFAQ;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider             = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
 
 })( jQuery );
 
@@ -2053,201 +2245,8 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_cards_slider = {};
-
-	$( document ).ready(
-		function () {
-			qodefCardsSlider.init();
-		}
-	);
-
-	var qodefCardsSlider = {
-		init: function () {
-			this.holder = $( '.qodef-qi-cards-slider' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefCardsSlider.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $holder ) {
-			qodefCardsSlider.sliderLoop( $holder );
-		},
-		isInView: function ( $holder ) {
-			// When item is 15% in the viewport.
-			var offset   = 0.15;
-			var observer = new IntersectionObserver(
-				function ( entries ) {
-					// isIntersecting is true when element and viewport are overlapping.
-					// isIntersecting is false when element and viewport don't overlap.
-					if ( entries[0].isIntersecting === true ) {
-						$holder.addClass( 'qodef-in-view' );
-					} else {
-						$holder.removeClass( 'qodef-in-view' );
-					}
-				},
-				{ threshold: [offset] }
-			);
-			observer.observe( $holder[0] );
-			document.addEventListener(
-				'visibilitychange',
-				function () {
-					if ( document.visibilityState === 'visible' ) {
-						$holder.addClass( 'qodef-in-view' );
-					} else {
-						$holder.removeClass( 'qodef-in-view' );
-					}
-				}
-			);
-		},
-		sliderLoop: function ( $holder, isPaused ) {
-			var $cards      = $holder.find( '.qodef-m-card' ),
-				orientation = $holder.data( 'orientation' ),
-				$navNext    = $holder.find( '.qodef--next' ),
-				$navPrev    = $holder.find( '.qodef--prev' ),
-				marginValue,
-				loopInterval;
-
-			switch (orientation) {
-				case 'left':
-					marginValue = '-10%';
-					break;
-				case 'right':
-					marginValue = '10%';
-					break;
-			}
-
-			// without opacity.
-			function nextItem() {
-				var $currentCard = $cards.last(),
-					$lastCard    = $cards.first();
-
-				if ( ! $currentCard.hasClass( 'qodef-out' ) ) {
-					$currentCard.addClass( 'qodef-out' ).animate(
-						{
-							right: marginValue
-						},
-						350,
-						'swing',
-						function () {
-							$currentCard.detach().insertBefore( $lastCard ).animate(
-								{
-									right: '0%'
-								},
-								450,
-								'swing',
-								function () {
-									setTimeout(
-										function () {
-											$currentCard.removeClass( 'qodef-out' );
-										},
-										10
-									);
-								}
-							);
-							$cards = $holder.find( '.qodef-m-card' );
-						}
-					);
-				}
-			}
-
-			function prevItem() {
-				var $currentCard = $cards.last(),
-					$lastCard    = $cards.first();
-
-				if ( ! $lastCard.hasClass( 'qodef-in' ) ) {
-					$holder.addClass( 'qodef-backwards' );
-					$lastCard.addClass( 'qodef-in' ).animate(
-						{
-							right: marginValue
-						},
-						350,
-						'swing',
-						function () {
-							$lastCard.detach().insertAfter( $currentCard ).animate(
-								{
-									right: '0'
-								},
-								450,
-								'swing',
-								function () {
-									$lastCard.removeClass( 'qodef-in' );
-									$holder.removeClass( 'qodef-backwards' );
-								}
-							);
-							$cards = $holder.find( '.qodef-m-card' );
-						}
-					);
-				}
-			}
-
-			loopInterval = setInterval(
-				function () {
-					if ( ! isPaused && $holder.hasClass( 'qodef-in-view' ) ) {
-						nextItem();
-					}
-				},
-				3000
-			);
-
-			qodefCardsSlider.isInView( $holder );
-
-			if ( qodefAddonsCore.windowWidth > 1024 ) {
-				$holder.on(
-					'mouseenter',
-					function () {
-						isPaused = true;
-					}
-				).on(
-					'mouseleave',
-					function () {
-						isPaused = false;
-					}
-				);
-			} else {
-				$holder.on(
-					'touchstart',
-					function () {
-						isPaused = true;
-					}
-				).on(
-					'touchend',
-					function () {
-						setTimeout(
-							function () {
-								isPaused = false;
-							},
-							2000
-						);
-					}
-				);
-			}
-
-			$navNext.on(
-				'click',
-				nextItem
-			);
-
-			$navPrev.on(
-				'click',
-				prevItem
-			);
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_cards_slider.qodefCardsSlider = qodefCardsSlider;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery_pinterest                    = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery_pinterest.qodefMasonryLayout = qodefAddonsCore.qodefMasonryLayout;
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery_pinterest.qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery                    = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery.qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
 
 })( jQuery );
 
@@ -2263,8 +2262,18 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery                    = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery.qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery_pinterest                    = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery_pinterest.qodefMasonryLayout = qodefAddonsCore.qodefMasonryLayout;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery_pinterest.qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_slider                    = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_slider.qodefSwiper        = qodefAddonsCore.qodefSwiper;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_slider.qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
 
 })( jQuery );
 
@@ -2657,126 +2666,6 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_slider                    = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_slider.qodefSwiper        = qodefAddonsCore.qodefSwiper;
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_slider.qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_circle = {};
-
-	$( document ).ready(
-		function () {
-			qodefProgressBar.init();
-		}
-	);
-
-	/**
-	 * Init progress bar - circle shortcode functionality
-	 */
-	var qodefProgressBar = {
-		init: function () {
-			this.holder = $( '.qodef-qi-progress-bar-circle' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefProgressBar.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-
-			qodefAddonsCore.qodefIsInViewport.check(
-				$currentItem,
-				function () {
-					$currentItem.addClass( 'qodef--init' );
-
-					var $container = $currentItem.find( '.qodef-m-canvas' ),
-						data       = qodefProgressBar.generateBarData( $currentItem ),
-						number     = $currentItem.data( 'number' ) / 100;
-
-					qodefProgressBar.initCircleBar(
-						$container,
-						data,
-						number
-					);
-				}
-			);
-		},
-		generateBarData: function ( $thisBar ) {
-			var activeWidth   = $thisBar.data( 'active-line-width' );
-			var activeColor   = $thisBar.data( 'active-line-color' );
-			var inactiveWidth = $thisBar.data( 'inactive-line-width' );
-			var inactiveColor = $thisBar.data( 'inactive-line-color' );
-			var easing        = 'linear';
-			var duration      = typeof $thisBar.data( 'duration' ) !== 'undefined' && $thisBar.data( 'duration' ) !== '' ? parseInt(
-				$thisBar.data( 'duration' ),
-				10
-			) : 1200;
-			var textColor     = $thisBar.data( 'text-color' );
-			var progressWidth = $thisBar.width();
-
-			return {
-				color: activeColor,
-				strokeWidth: activeWidth * 100 / progressWidth,
-				trailColor: inactiveColor,
-				trailWidth: inactiveWidth * 100 / progressWidth,
-				svgStyle: {
-					display: 'block',
-					width: '100%',
-				},
-				text: {
-					className: 'qodef-m-value',
-					style: {
-						color: textColor
-					},
-					autoStyleContainer: false
-				},
-				easing: easing,
-				duration: duration,
-				from: {
-					color: inactiveColor
-				},
-				to: {
-					color: activeColor
-				},
-				step: function ( state, bar ) {
-					bar.setText( Math.round( bar.value() * 100 ) + '<sup class="qodef-m-percentage">%</sup>' );
-				},
-			};
-		},
-		initCircleBar: function ( $container, data, number ) {
-			if ( qodefProgressBar.checkBar( $container ) ) {
-				var $bar = new ProgressBar.Circle(
-					$container[0],
-					data
-				);
-
-				$bar.animate( number );
-			}
-		},
-		checkBar: function ( $container ) {
-			// check if svg is already in container, elementor fix.
-			if ( $container.find( 'svg' ).length ) {
-				return false;
-			}
-
-			return true;
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_circle.qodefProgressBar = qodefProgressBar;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_horizontal = {};
 
 	$( document ).ready(
@@ -2962,126 +2851,120 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_circle = {};
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title.qodefButton = qodefAddonsCore.qodefButton;
+	$( document ).ready(
+		function () {
+			qodefProgressBar.init();
+		}
+	);
+
+	/**
+	 * Init progress bar - circle shortcode functionality
+	 */
+	var qodefProgressBar = {
+		init: function () {
+			this.holder = $( '.qodef-qi-progress-bar-circle' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefProgressBar.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+
+			qodefAddonsCore.qodefIsInViewport.check(
+				$currentItem,
+				function () {
+					$currentItem.addClass( 'qodef--init' );
+
+					var $container = $currentItem.find( '.qodef-m-canvas' ),
+						data       = qodefProgressBar.generateBarData( $currentItem ),
+						number     = $currentItem.data( 'number' ) / 100;
+
+					qodefProgressBar.initCircleBar(
+						$container,
+						data,
+						number
+					);
+				}
+			);
+		},
+		generateBarData: function ( $thisBar ) {
+			var activeWidth   = $thisBar.data( 'active-line-width' );
+			var activeColor   = $thisBar.data( 'active-line-color' );
+			var inactiveWidth = $thisBar.data( 'inactive-line-width' );
+			var inactiveColor = $thisBar.data( 'inactive-line-color' );
+			var easing        = 'linear';
+			var duration      = typeof $thisBar.data( 'duration' ) !== 'undefined' && $thisBar.data( 'duration' ) !== '' ? parseInt(
+				$thisBar.data( 'duration' ),
+				10
+			) : 1200;
+			var textColor     = $thisBar.data( 'text-color' );
+			var progressWidth = $thisBar.width();
+
+			return {
+				color: activeColor,
+				strokeWidth: activeWidth * 100 / progressWidth,
+				trailColor: inactiveColor,
+				trailWidth: inactiveWidth * 100 / progressWidth,
+				svgStyle: {
+					display: 'block',
+					width: '100%',
+				},
+				text: {
+					className: 'qodef-m-value',
+					style: {
+						color: textColor
+					},
+					autoStyleContainer: false
+				},
+				easing: easing,
+				duration: duration,
+				from: {
+					color: inactiveColor
+				},
+				to: {
+					color: activeColor
+				},
+				step: function ( state, bar ) {
+					bar.setText( Math.round( bar.value() * 100 ) + '<sup class="qodef-m-percentage">%</sup>' );
+				},
+			};
+		},
+		initCircleBar: function ( $container, data, number ) {
+			if ( qodefProgressBar.checkBar( $container ) ) {
+				var $bar = new ProgressBar.Circle(
+					$container[0],
+					data
+				);
+
+				$bar.animate( number );
+			}
+		},
+		checkBar: function ( $container ) {
+			// check if svg is already in container, elementor fix.
+			if ( $container.find( 'svg' ).length ) {
+				return false;
+			}
+
+			return true;
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_circle.qodefProgressBar = qodefProgressBar;
 
 })( jQuery );
 
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_slider_switch = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title = {};
 
-	$( document ).ready(
-		function () {
-			qodefSliderSwitch.init();
-		}
-	);
-
-	var qodefSliderSwitch = {
-		init: function () {
-			this.sliders = $( '.qodef-qi-slider-switch' );
-
-			if ( this.sliders.length ) {
-				this.sliders.each(
-					function () {
-						qodefSliderSwitch.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			qodefAddonsCore.qodefSwiperElementorCheck.init( qodefSliderSwitch.initSwiperReinit, $currentItem );
-		},
-		initSwiperReinit: function ( $currentItem ) {
-			var $activeSlide  = $currentItem.find( '.qodef-m-main-slider > .qodef-qi-swiper-container .swiper-slide-active' ),
-				$deviceHolder = $currentItem.find( '.qodef-slider-switch-device-holder' ),
-				$mainSlider   = $currentItem.find( '.qodef-m-main-slider > .qodef-qi-swiper-container' ),
-				$deviceSlider = $currentItem.find( '.qodef-slider-switch-device-holder .qodef-qi-swiper-container' ),
-				$textSlider   = $currentItem.find( '.qodef-m-main-text .qodef-qi-swiper-container' ),
-				deviceSliderOptions,
-				textSliderOptions,
-				numItemsMain,
-				autoplayDelay;
-
-			$deviceHolder.width( $activeSlide.width() );
-			$deviceHolder.css(
-				'top',
-				$activeSlide.height()
-			);
-
-			numItemsMain        = $mainSlider.find( '.swiper-slide' ).length;
-			deviceSliderOptions = $deviceSlider[0].swiper.params;
-			// real number of slides should be the same on both sides because of controller.
-			deviceSliderOptions['loopedSlides'] = numItemsMain;
-			deviceSliderOptions['autoplay']     = false;
-			textSliderOptions                   = $textSlider[0].swiper.params;
-			textSliderOptions['grabCursor']     = false;
-			// real number of slides should be the same on both sides because of controller.
-			textSliderOptions['loopedSlides']   = numItemsMain;
-			textSliderOptions['autoplay']       = false;
-			textSliderOptions['effect']         = 'fade';
-			textSliderOptions['allowTouchMove'] = false;
-			$textSlider[0].swiper.update();
-
-			autoplayDelay = $deviceSlider.data()['options']['autoplayDelay'];
-
-			var autoplayEnabled = $mainSlider[0].swiper.autoplay.running;
-
-			$mainSlider[0].swiper.autoplay.stop();
-			$deviceSlider[0].swiper.destroy();
-			$textSlider[0].swiper.destroy();
-
-			var $swiperDeviceNew = new Swiper(
-				$deviceSlider[0],
-				Object.assign( deviceSliderOptions )
-			);
-			var $swiperTextNew   = new Swiper(
-				$textSlider[0],
-				Object.assign( textSliderOptions )
-			);
-
-			$mainSlider[0].swiper.controller.control = $swiperDeviceNew;
-			$mainSlider[0].swiper.controller.by      = 'slide';
-			$mainSlider[0].swiper.controller.inverse = true;
-			$swiperDeviceNew.controller.control      = $mainSlider[0].swiper;
-
-			if ( autoplayEnabled ) {
-				if ( autoplayDelay !== '' ) {
-					setTimeout(
-						function () {
-							$mainSlider[0].swiper.autoplay.start();
-						},
-						autoplayDelay
-					);
-				} else {
-					$mainSlider[0].swiper.autoplay.start();
-				}
-			}
-
-			$currentItem.addClass( 'qodef--visible' );
-
-			$swiperDeviceNew.on(
-				'slideChange',
-				function () {
-					var index_deviceSlide = $swiperDeviceNew.realIndex;
-					var index_textSlide   = $swiperTextNew.realIndex;
-
-					if ( index_deviceSlide != index_textSlide ) {
-						$swiperTextNew.slideTo(
-							index_deviceSlide,
-							1000,
-							false
-						);
-					}
-				}
-			);
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_slider_switch.qodefSwiper       = qodefAddonsCore.qodefSwiper;
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_slider_switch.qodefSliderSwitch = qodefSliderSwitch;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title.qodefButton = qodefAddonsCore.qodefButton;
 
 })( jQuery );
 
@@ -3292,6 +3175,123 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_vertical.qodefProgressBar = qodefProgressBar;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_slider_switch = {};
+
+	$( document ).ready(
+		function () {
+			qodefSliderSwitch.init();
+		}
+	);
+
+	var qodefSliderSwitch = {
+		init: function () {
+			this.sliders = $( '.qodef-qi-slider-switch' );
+
+			if ( this.sliders.length ) {
+				this.sliders.each(
+					function () {
+						qodefSliderSwitch.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			qodefAddonsCore.qodefSwiperElementorCheck.init( qodefSliderSwitch.initSwiperReinit, $currentItem );
+		},
+		initSwiperReinit: function ( $currentItem ) {
+			var $activeSlide  = $currentItem.find( '.qodef-m-main-slider > .qodef-qi-swiper-container .swiper-slide-active' ),
+				$deviceHolder = $currentItem.find( '.qodef-slider-switch-device-holder' ),
+				$mainSlider   = $currentItem.find( '.qodef-m-main-slider > .qodef-qi-swiper-container' ),
+				$deviceSlider = $currentItem.find( '.qodef-slider-switch-device-holder .qodef-qi-swiper-container' ),
+				$textSlider   = $currentItem.find( '.qodef-m-main-text .qodef-qi-swiper-container' ),
+				deviceSliderOptions,
+				textSliderOptions,
+				numItemsMain,
+				autoplayDelay;
+
+			$deviceHolder.width( $activeSlide.width() );
+			$deviceHolder.css(
+				'top',
+				$activeSlide.height()
+			);
+
+			numItemsMain        = $mainSlider.find( '.swiper-slide' ).length;
+			deviceSliderOptions = $deviceSlider[0].swiper.params;
+			// real number of slides should be the same on both sides because of controller.
+			deviceSliderOptions['loopedSlides'] = numItemsMain;
+			deviceSliderOptions['autoplay']     = false;
+			textSliderOptions                   = $textSlider[0].swiper.params;
+			textSliderOptions['grabCursor']     = false;
+			// real number of slides should be the same on both sides because of controller.
+			textSliderOptions['loopedSlides']   = numItemsMain;
+			textSliderOptions['autoplay']       = false;
+			textSliderOptions['effect']         = 'fade';
+			textSliderOptions['allowTouchMove'] = false;
+			$textSlider[0].swiper.update();
+
+			autoplayDelay = $deviceSlider.data()['options']['autoplayDelay'];
+
+			var autoplayEnabled = $mainSlider[0].swiper.autoplay.running;
+
+			$mainSlider[0].swiper.autoplay.stop();
+			$deviceSlider[0].swiper.destroy();
+			$textSlider[0].swiper.destroy();
+
+			var $swiperDeviceNew = new Swiper(
+				$deviceSlider[0],
+				Object.assign( deviceSliderOptions )
+			);
+			var $swiperTextNew   = new Swiper(
+				$textSlider[0],
+				Object.assign( textSliderOptions )
+			);
+
+			$mainSlider[0].swiper.controller.control = $swiperDeviceNew;
+			$mainSlider[0].swiper.controller.by      = 'slide';
+			$mainSlider[0].swiper.controller.inverse = true;
+			$swiperDeviceNew.controller.control      = $mainSlider[0].swiper;
+
+			if ( autoplayEnabled ) {
+				if ( autoplayDelay !== '' ) {
+					setTimeout(
+						function () {
+							$mainSlider[0].swiper.autoplay.start();
+						},
+						autoplayDelay
+					);
+				} else {
+					$mainSlider[0].swiper.autoplay.start();
+				}
+			}
+
+			$currentItem.addClass( 'qodef--visible' );
+
+			$swiperDeviceNew.on(
+				'slideChange',
+				function () {
+					var index_deviceSlide = $swiperDeviceNew.realIndex;
+					var index_textSlide   = $swiperTextNew.realIndex;
+
+					if ( index_deviceSlide != index_textSlide ) {
+						$swiperTextNew.slideTo(
+							index_deviceSlide,
+							1000,
+							false
+						);
+					}
+				}
+			);
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_slider_switch.qodefSwiper       = qodefAddonsCore.qodefSwiper;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_slider_switch.qodefSliderSwitch = qodefSliderSwitch;
 
 })( jQuery );
 
@@ -3627,14 +3627,6 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider             = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_tabs_vertical = {};
 
 	$( document ).ready(
@@ -3687,75 +3679,8 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_typeout_text = {};
-
-	$( document ).ready(
-		function () {
-			qodefTypeoutText.init();
-		}
-	);
-
-	$( window ).on(
-		'elementor/frontend/init',
-		function () {
-			if ( elementorFrontend.isEditMode() ) {
-				elementor.channels.editor.on(
-					'change',
-					function () {
-						qodefTypeoutText.init();
-					}
-				);
-			}
-		}
-	);
-
-	/**
-	 * Init charts shortcode functionality
-	 */
-	var qodefTypeoutText = {
-		init: function () {
-			this.holder = $( '.qodef-qi-typeout-text' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefTypeoutText.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			var $qodefTypeout = $currentItem.find( '.qodef-typeout' ),
-				strings       = $currentItem.data( 'strings' ),
-				cursor        = typeof $currentItem.data( 'cursor' ) !== 'undefined' ? $currentItem.data( 'cursor' ) : '';
-
-			$qodefTypeout.each(
-				function () {
-					var $this   = $( this ),
-						options = {
-							strings: strings,
-							typeSpeed: 90,
-							backDelay: 700,
-							loop: true,
-							contentType: 'text',
-							loopCount: false,
-							cursorChar: cursor
-					};
-
-					if ( ! $this.hasClass( 'qodef--initialized' ) ) {
-
-						var typed = new Typed(
-							$this[0],
-							options
-						);
-						$this.addClass( 'qodef--initialized' );
-					}
-				}
-			);
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_typeout_text.qodefTypeoutText = qodefTypeoutText;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider             = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
 
 })( jQuery );
 
@@ -3924,25 +3849,75 @@
 (function ( $ ) {
 	'use strict';
 
-	var shortcode = 'qi_addons_for_elementor_blog_slider';
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_typeout_text = {};
 
-	qodefAddonsCore.shortcodes[shortcode] = {};
+	$( document ).ready(
+		function () {
+			qodefTypeoutText.init();
+		}
+	);
 
-	qodefAddonsCore.shortcodes[shortcode].qodefSwiper        = qodefAddonsCore.qodefSwiper;
-	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
-	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
-})( jQuery );
+	$( window ).on(
+		'elementor/frontend/init',
+		function () {
+			if ( elementorFrontend.isEditMode() ) {
+				elementor.channels.editor.on(
+					'change',
+					function () {
+						qodefTypeoutText.init();
+					}
+				);
+			}
+		}
+	);
 
-(function ( $ ) {
-	'use strict';
+	/**
+	 * Init charts shortcode functionality
+	 */
+	var qodefTypeoutText = {
+		init: function () {
+			this.holder = $( '.qodef-qi-typeout-text' );
 
-	var shortcode = 'qi_addons_for_elementor_blog_list';
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefTypeoutText.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			var $qodefTypeout = $currentItem.find( '.qodef-typeout' ),
+				strings       = $currentItem.data( 'strings' ),
+				cursor        = typeof $currentItem.data( 'cursor' ) !== 'undefined' ? $currentItem.data( 'cursor' ) : '';
 
-	qodefAddonsCore.shortcodes[shortcode] = {};
+			$qodefTypeout.each(
+				function () {
+					var $this   = $( this ),
+						options = {
+							strings: strings,
+							typeSpeed: 90,
+							backDelay: 700,
+							loop: true,
+							contentType: 'text',
+							loopCount: false,
+							cursorChar: cursor
+					};
 
-	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
-	qodefAddonsCore.shortcodes[shortcode].qodefMasonryLayout = qodefAddonsCore.qodefMasonryLayout;
-	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
+					if ( ! $this.hasClass( 'qodef--initialized' ) ) {
+
+						var typed = new Typed(
+							$this[0],
+							options
+						);
+						$this.addClass( 'qodef--initialized' );
+					}
+				}
+			);
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_typeout_text.qodefTypeoutText = qodefTypeoutText;
 
 })( jQuery );
 
@@ -4173,75 +4148,26 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button = {};
+	var shortcode = 'qi_addons_for_elementor_blog_list';
 
-	$( document ).ready(
-		function () {
-			changeViewCart.init();
-		}
-	);
+	qodefAddonsCore.shortcodes[shortcode] = {};
 
-	var changeViewCart = {
-		init: function () {
-			this.holder = $( '.qodef-qi-woo-shortcode-add-to-cart' );
+	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+	qodefAddonsCore.shortcodes[shortcode].qodefMasonryLayout = qodefAddonsCore.qodefMasonryLayout;
+	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
 
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						changeViewCart.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			qodefAddonsCore.shortcodes.qi_addons_for_elementor_button.qodefButton.init( $currentItem );
+})( jQuery );
 
-			$( 'body' ).on(
-				'added_to_cart',
-				function () {
-					var $viewButton = $currentItem.find( '.added_to_cart:not(.qodef-qi-button)' );
+(function ( $ ) {
+	'use strict';
 
-					if ( $viewButton.length ) {
-						var $addButton      = $viewButton.siblings( '.add_to_cart_button' ),
-							classesToRemove = ['button', 'product_type_simple', 'add_to_cart_button', 'ajax_add_to_cart', 'added'],
-							classesCount    = classesToRemove.length,
-							classes         = $addButton.attr( 'class' ),
-							$border         = $addButton.find( '.qodef-m-border' ),
-							$innerBorder    = $addButton.find( '.qodef-m-inner-border' ),
-							$icon           = $addButton.find( '.qodef-m-icon' );
+	var shortcode = 'qi_addons_for_elementor_blog_slider';
 
-						for ( var i = 0; i < classesCount; i++ ) {
-							classes = classes.replace( classesToRemove[i], '' );
-						}
+	qodefAddonsCore.shortcodes[shortcode] = {};
 
-						$viewButton.addClass( classes );
-						$viewButton.wrapInner( '<span class="qodef-m-text">' );
-
-						if ( $border.length ) {
-							var $duplicateBorder = $border.clone();
-
-							$viewButton.append( $duplicateBorder );
-						}
-
-						if ( $icon.length ) {
-							var $duplicateIcon = $icon.clone();
-
-							$viewButton.append( $duplicateIcon );
-						}
-
-						if ( $innerBorder.length ) {
-							var $duplicateInner = $innerBorder.clone();
-
-							$viewButton.append( $duplicateInner );
-						}
-					}
-				}
-			);
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button.changeViewCart = changeViewCart;
-
+	qodefAddonsCore.shortcodes[shortcode].qodefSwiper        = qodefAddonsCore.qodefSwiper;
+	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
 })( jQuery );
 
 (function ( $ ) {
@@ -4327,45 +4253,74 @@
 (function ( $ ) {
 	'use strict';
 
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button = {};
+
 	$( document ).ready(
 		function () {
-			qodefInteractiveBannerReveal.init();
+			changeViewCart.init();
 		}
 	);
 
-	var qodefInteractiveBannerReveal = {
+	var changeViewCart = {
 		init: function () {
-			this.holder = $( '.qodef-qi-interactive-banner' );
+			this.holder = $( '.qodef-qi-woo-shortcode-add-to-cart' );
 
 			if ( this.holder.length ) {
 				this.holder.each(
 					function () {
-						qodefInteractiveBannerReveal.initItem( $( this ) );
+						changeViewCart.initItem( $( this ) );
 					}
 				);
 			}
 		},
 		initItem: function ( $currentItem ) {
-			if ( $currentItem.hasClass( 'qodef-layout--revealing' ) ) {
-				var $text      = $currentItem.find( '.qodef-m-content-inner > .qodef-m-text' ),
-					$button    = $currentItem.find( '.qodef-m-button' ),
-					textHeight = $text.outerHeight( true );
+			qodefAddonsCore.shortcodes.qi_addons_for_elementor_button.qodefButton.init( $currentItem );
 
-				$button.css(
-					'transform',
-					'translateY(-' + textHeight + 'px) translateZ(0)'
-				);
-				setTimeout(
-					function () {
-						$currentItem.addClass( 'qodef--visible' );
-					},
-					400
-				);
-			}
-		},
+			$( 'body' ).on(
+				'added_to_cart',
+				function () {
+					var $viewButton = $currentItem.find( '.added_to_cart:not(.qodef-qi-button)' );
+
+					if ( $viewButton.length ) {
+						var $addButton      = $viewButton.siblings( '.add_to_cart_button' ),
+							classesToRemove = ['button', 'product_type_simple', 'add_to_cart_button', 'ajax_add_to_cart', 'added'],
+							classesCount    = classesToRemove.length,
+							classes         = $addButton.attr( 'class' ),
+							$border         = $addButton.find( '.qodef-m-border' ),
+							$innerBorder    = $addButton.find( '.qodef-m-inner-border' ),
+							$icon           = $addButton.find( '.qodef-m-icon' );
+
+						for ( var i = 0; i < classesCount; i++ ) {
+							classes = classes.replace( classesToRemove[i], '' );
+						}
+
+						$viewButton.addClass( classes );
+						$viewButton.wrapInner( '<span class="qodef-m-text">' );
+
+						if ( $border.length ) {
+							var $duplicateBorder = $border.clone();
+
+							$viewButton.append( $duplicateBorder );
+						}
+
+						if ( $icon.length ) {
+							var $duplicateIcon = $icon.clone();
+
+							$viewButton.append( $duplicateIcon );
+						}
+
+						if ( $innerBorder.length ) {
+							var $duplicateInner = $innerBorder.clone();
+
+							$viewButton.append( $duplicateInner );
+						}
+					}
+				}
+			);
+		}
 	};
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefInteractiveBannerReveal = qodefInteractiveBannerReveal;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button.changeViewCart = changeViewCart;
 
 })( jQuery );
 
@@ -4411,6 +4366,51 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefInteractiveBannerFromBottom = qodefInteractiveBannerFromBottom;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	$( document ).ready(
+		function () {
+			qodefInteractiveBannerReveal.init();
+		}
+	);
+
+	var qodefInteractiveBannerReveal = {
+		init: function () {
+			this.holder = $( '.qodef-qi-interactive-banner' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefInteractiveBannerReveal.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			if ( $currentItem.hasClass( 'qodef-layout--revealing' ) ) {
+				var $text      = $currentItem.find( '.qodef-m-content-inner > .qodef-m-text' ),
+					$button    = $currentItem.find( '.qodef-m-button' ),
+					textHeight = $text.outerHeight( true );
+
+				$button.css(
+					'transform',
+					'translateY(-' + textHeight + 'px) translateZ(0)'
+				);
+				setTimeout(
+					function () {
+						$currentItem.addClass( 'qodef--visible' );
+					},
+					400
+				);
+			}
+		},
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefInteractiveBannerReveal = qodefInteractiveBannerReveal;
 
 })( jQuery );
 
