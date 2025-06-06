@@ -902,65 +902,6 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text = {};
-
-	$( document ).ready(
-		function () {
-			qodefAnimatedText.init();
-		}
-	);
-
-	var qodefAnimatedText = {
-		init: function () {
-			this.holder = $( '.qodef-qi-animated-text.qodef--animated-by-letter' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefAnimatedText.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			var $words = $currentItem.find( '.qodef-e-word-holder' );
-
-			$words.each(
-				function () {
-					var $word       = $( this ).text(),
-						$wordCount	= $word.length,
-						$split_word = ''
-
-					for (var i = 0; i < $wordCount; i++) {
-						$split_word += '<span class="qodef-e-character">' + $word.charAt( i ) + '</span>';
-					}
-
-					$( this ).html( $split_word );
-				}
-			);
-
-			var $characters = $currentItem.find( '.qodef-e-character' );
-
-			$characters.each(
-				function (index) {
-					var $character         = $( this ),
-						transitionModifier = $currentItem.hasClass( 'qodef--appear-from-left' ) ? 40 : 60,
-						transitionDelay    = (index * transitionModifier) + 'ms';
-
-					$character.css( 'transition-delay', transitionDelay );
-				}
-			);
-		},
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAppear       = qodefAddonsCore.qodefAppear;
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAnimatedText = qodefAnimatedText;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_accordion = {};
 
 	$( document ).ready(
@@ -1676,6 +1617,116 @@
 (function ( $ ) {
 	'use strict';
 
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_counter = {};
+
+	$( document ).ready(
+		function () {
+			qodefCounter.init();
+		}
+	);
+
+	var qodefCounter = {
+		init: function () {
+			this.counters = $( '.qodef-qi-counter' );
+
+			if ( this.counters.length ) {
+				this.counters.each(
+					function () {
+						qodefCounter.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			var $counterElement = $currentItem.find( '.qodef-m-digit' ),
+				options         = qodefCounter.generateOptions( $currentItem );
+
+			qodefAddonsCore.qodefIsInViewport.check(
+				$currentItem,
+				function () {
+					qodefCounter.counterScript(
+						$counterElement,
+						options
+					);
+				}
+			);
+		},
+		generateOptions: function ( $counter ) {
+			var options   = {};
+			options.start = typeof $counter.data( 'start-digit' ) !== 'undefined' && $counter.data( 'start-digit' ) !== '' ? $counter.data( 'start-digit' ) : 0;
+			options.end   = typeof $counter.data( 'end-digit' ) !== 'undefined' && $counter.data( 'end-digit' ) !== '' ? $counter.data( 'end-digit' ) : null;
+			options.step  = typeof $counter.data( 'step-digit' ) !== 'undefined' && $counter.data( 'step-digit' ) !== '' ? $counter.data( 'step-digit' ) : 1;
+			options.delay = typeof $counter.data( 'step-delay' ) !== 'undefined' && $counter.data( 'step-delay' ) !== '' ? parseInt(
+				$counter.data( 'step-delay' ),
+				10
+			) : 100;
+			options.txt   = typeof $counter.data( 'digit-label' ) !== 'undefined' && $counter.data( 'digit-label' ) !== '' ? String( $counter.data( 'digit-label' ) ) : '';
+
+			return options;
+		},
+		counterScript: function ( $counterElement, options ) {
+			var defaults = {
+				start: 0,
+				end: null,
+				step: 1,
+				delay: 50,
+				txt: '',
+			};
+
+			var settings = $.extend(
+				defaults,
+				options || {}
+			);
+			var nb_start = settings.start;
+			var nb_end   = settings.end;
+
+			$counterElement.text( nb_start + settings.txt );
+
+			// Timer.
+			// Launches every "settings.delay".
+			var counterInterval = setInterval(
+				function () {
+					// Definition of conditions of arrest.
+					if ( nb_end !== null && nb_start >= nb_end ) {
+						return;
+					}
+					// incrementation.
+					nb_start = nb_start + settings.step;
+					// Check is ended.
+					if ( nb_start >= nb_end ) {
+						nb_start = nb_end;
+						clearInterval( counterInterval );
+					}
+					// display.
+					$counterElement.text( nb_start + settings.txt );
+				},
+				settings.delay
+			);
+
+			var counter = function () {
+				// Definition of conditions of arrest.
+				if ( nb_end !== null && nb_start >= nb_end ) {
+					return;
+				}
+				// incrementation.
+				nb_start = nb_start + settings.step;
+
+				if ( nb_start >= nb_end ) {
+					nb_start = nb_end;
+				}
+				// display.
+				$counterElement.text( nb_start + settings.txt );
+			};
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_counter.qodefCounter = qodefCounter;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_countdown = {};
 
 	$( document ).ready(
@@ -1799,124 +1850,6 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_counter = {};
-
-	$( document ).ready(
-		function () {
-			qodefCounter.init();
-		}
-	);
-
-	var qodefCounter = {
-		init: function () {
-			this.counters = $( '.qodef-qi-counter' );
-
-			if ( this.counters.length ) {
-				this.counters.each(
-					function () {
-						qodefCounter.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			var $counterElement = $currentItem.find( '.qodef-m-digit' ),
-				options         = qodefCounter.generateOptions( $currentItem );
-
-			qodefAddonsCore.qodefIsInViewport.check(
-				$currentItem,
-				function () {
-					qodefCounter.counterScript(
-						$counterElement,
-						options
-					);
-				}
-			);
-		},
-		generateOptions: function ( $counter ) {
-			var options   = {};
-			options.start = typeof $counter.data( 'start-digit' ) !== 'undefined' && $counter.data( 'start-digit' ) !== '' ? $counter.data( 'start-digit' ) : 0;
-			options.end   = typeof $counter.data( 'end-digit' ) !== 'undefined' && $counter.data( 'end-digit' ) !== '' ? $counter.data( 'end-digit' ) : null;
-			options.step  = typeof $counter.data( 'step-digit' ) !== 'undefined' && $counter.data( 'step-digit' ) !== '' ? $counter.data( 'step-digit' ) : 1;
-			options.delay = typeof $counter.data( 'step-delay' ) !== 'undefined' && $counter.data( 'step-delay' ) !== '' ? parseInt(
-				$counter.data( 'step-delay' ),
-				10
-			) : 100;
-			options.txt   = typeof $counter.data( 'digit-label' ) !== 'undefined' && $counter.data( 'digit-label' ) !== '' ? String( $counter.data( 'digit-label' ) ) : '';
-
-			return options;
-		},
-		counterScript: function ( $counterElement, options ) {
-			var defaults = {
-				start: 0,
-				end: null,
-				step: 1,
-				delay: 50,
-				txt: '',
-			};
-
-			var settings = $.extend(
-				defaults,
-				options || {}
-			);
-			var nb_start = settings.start;
-			var nb_end   = settings.end;
-
-			$counterElement.text( nb_start + settings.txt );
-
-			// Timer.
-			// Launches every "settings.delay".
-			var counterInterval = setInterval(
-				function () {
-					// Definition of conditions of arrest.
-					if ( nb_end !== null && nb_start >= nb_end ) {
-						return;
-					}
-					// incrementation.
-					nb_start = nb_start + settings.step;
-					// Check is ended.
-					if ( nb_start >= nb_end ) {
-						nb_start = nb_end;
-						clearInterval( counterInterval );
-					}
-					// display.
-					$counterElement.text( nb_start + settings.txt );
-				},
-				settings.delay
-			);
-
-			var counter = function () {
-				// Definition of conditions of arrest.
-				if ( nb_end !== null && nb_start >= nb_end ) {
-					return;
-				}
-				// incrementation.
-				nb_start = nb_start + settings.step;
-
-				if ( nb_start >= nb_end ) {
-					nb_start = nb_end;
-				}
-				// display.
-				$counterElement.text( nb_start + settings.txt );
-			};
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_counter.qodefCounter = qodefCounter;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider             = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_carousel = {};
 
 	$( document ).ready(
@@ -2018,6 +1951,73 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_faq.qodefFAQ = qodefFAQ;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text = {};
+
+	$( document ).ready(
+		function () {
+			qodefAnimatedText.init();
+		}
+	);
+
+	var qodefAnimatedText = {
+		init: function () {
+			this.holder = $( '.qodef-qi-animated-text.qodef--animated-by-letter' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefAnimatedText.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			var $words = $currentItem.find( '.qodef-e-word-holder' );
+
+			$words.each(
+				function () {
+					var $word       = $( this ).text(),
+						$wordCount	= $word.length,
+						$split_word = ''
+
+					for (var i = 0; i < $wordCount; i++) {
+						$split_word += '<span class="qodef-e-character">' + $word.charAt( i ) + '</span>';
+					}
+
+					$( this ).html( $split_word );
+				}
+			);
+
+			var $characters = $currentItem.find( '.qodef-e-character' );
+
+			$characters.each(
+				function (index) {
+					var $character         = $( this ),
+						transitionModifier = $currentItem.hasClass( 'qodef--appear-from-left' ) ? 40 : 60,
+						transitionDelay    = (index * transitionModifier) + 'ms';
+
+					$character.css( 'transition-delay', transitionDelay );
+				}
+			);
+		},
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAppear       = qodefAddonsCore.qodefAppear;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_animated_text.qodefAnimatedText = qodefAnimatedText;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_highlight             = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_highlight.qodefAppear = qodefAddonsCore.qodefAppear;
 
 })( jQuery );
 
@@ -2228,25 +2228,16 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_highlight             = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_highlight.qodefAppear = qodefAddonsCore.qodefAppear;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_icon_with_text             = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_icon_with_text.qodefAppear = qodefAddonsCore.qodefAppear;
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_icon_with_text.qodefButton = qodefAddonsCore.qodefButton;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery                    = {};
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_image_gallery.qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider             = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_device_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
 
 })( jQuery );
 
@@ -2334,78 +2325,18 @@
 (function ( $ ) {
 	'use strict';
 
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_icon_with_text             = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_icon_with_text.qodefAppear = qodefAddonsCore.qodefAppear;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_icon_with_text.qodefButton = qodefAddonsCore.qodefButton;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_info_cards = {};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_info_cards.qodefButton = qodefAddonsCore.qodefButton;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner = {};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefButton = qodefAddonsCore.qodefButton;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_link_showcase = {};
-
-	$( document ).ready(
-		function () {
-			qodefInteractiveLinkShowcase.init();
-		}
-	);
-
-	var qodefInteractiveLinkShowcase = {
-		init: function () {
-			this.holder = $( '.qodef-qi-interactive-link-showcase' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefInteractiveLinkShowcase.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			var $images = $currentItem.find( '.qodef-e-image' ),
-				$links  = $currentItem.find( '.qodef-m-item' );
-
-			$images.eq( 0 ).addClass( 'qodef--active' );
-			$links.eq( 0 ).addClass( 'qodef--active' );
-
-			$links.on(
-				'touchstart mouseenter',
-				function ( e ) {
-					var $thisLink = $( this );
-
-					if ( ! qodefAddonsCore.body.hasClass( 'qodef-qi--touch' ) || ( ! $thisLink.hasClass( 'qodef--active' ) && qodefAddonsCore.windowWidth > 680) ) {
-						e.preventDefault();
-						$images.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
-						$links.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
-					}
-				}
-			).on(
-				'touchend mouseleave',
-				function () {
-					var $thisLink = $( this );
-
-					if ( ! qodefAddonsCore.body.hasClass( 'qodef-qi--touch' ) || ( ! $thisLink.hasClass( 'qodef--active' ) && qodefAddonsCore.windowWidth > 680) ) {
-						$links.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
-						$images.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
-					}
-				}
-			);
-			$currentItem.addClass( 'qodef--init' );
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_link_showcase.qodefInteractiveLinkShowcase = qodefInteractiveLinkShowcase;
 
 })( jQuery );
 
@@ -2569,6 +2500,15 @@
 (function ( $ ) {
 	'use strict';
 
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner = {};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefButton = qodefAddonsCore.qodefButton;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_preview_slider = {};
 
 	$( document ).ready(
@@ -2658,193 +2598,68 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_process             = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_process.qodefAppear = qodefAddonsCore.qodefAppear;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_link_showcase = {};
+
+	$( document ).ready(
+		function () {
+			qodefInteractiveLinkShowcase.init();
+		}
+	);
+
+	var qodefInteractiveLinkShowcase = {
+		init: function () {
+			this.holder = $( '.qodef-qi-interactive-link-showcase' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefInteractiveLinkShowcase.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			var $images = $currentItem.find( '.qodef-e-image' ),
+				$links  = $currentItem.find( '.qodef-m-item' );
+
+			$images.eq( 0 ).addClass( 'qodef--active' );
+			$links.eq( 0 ).addClass( 'qodef--active' );
+
+			$links.on(
+				'touchstart mouseenter',
+				function ( e ) {
+					var $thisLink = $( this );
+
+					if ( ! qodefAddonsCore.body.hasClass( 'qodef-qi--touch' ) || ( ! $thisLink.hasClass( 'qodef--active' ) && qodefAddonsCore.windowWidth > 680) ) {
+						e.preventDefault();
+						$images.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
+						$links.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
+					}
+				}
+			).on(
+				'touchend mouseleave',
+				function () {
+					var $thisLink = $( this );
+
+					if ( ! qodefAddonsCore.body.hasClass( 'qodef-qi--touch' ) || ( ! $thisLink.hasClass( 'qodef--active' ) && qodefAddonsCore.windowWidth > 680) ) {
+						$links.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
+						$images.removeClass( 'qodef--active' ).eq( $thisLink.index() ).addClass( 'qodef--active' );
+					}
+				}
+			);
+			$currentItem.addClass( 'qodef--init' );
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_link_showcase.qodefInteractiveLinkShowcase = qodefInteractiveLinkShowcase;
 
 })( jQuery );
 
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_horizontal = {};
-
-	$( document ).ready(
-		function () {
-			qodefProgressBar.init();
-		}
-	);
-
-	/**
-	 * Init progress bar - horizontal shortcode functionality
-	 */
-	var qodefProgressBar = {
-		init: function () {
-			this.holder = $( '.qodef-qi-progress-bar-horizontal' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefProgressBar.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-
-			qodefAddonsCore.qodefIsInViewport.check(
-				$currentItem,
-				function () {
-					$currentItem.addClass( 'qodef--init' );
-
-					var $container = $currentItem.find( '.qodef-m-canvas' ),
-						data       = qodefProgressBar.generateBarData( $currentItem ),
-						number     = $currentItem.data( 'number' ) / 100;
-
-					qodefProgressBar.initHorizontalBar(
-						$container,
-						data,
-						number,
-						$currentItem
-					);
-				}
-			);
-		},
-		generateBarData: function ( $thisBar ) {
-			var activeWidth    = $thisBar.data( 'active-line-width' );
-			var activeColor    = $thisBar.data( 'active-line-color' );
-			var inactiveWidth  = $thisBar.data( 'inactive-line-width' );
-			var inactiveColor  = $thisBar.data( 'inactive-line-color' );
-			var easing         = 'easeInOut';
-			var duration       = typeof $thisBar.data( 'duration' ) !== 'undefined' && $thisBar.data( 'duration' ) !== '' ? parseInt(
-				$thisBar.data( 'duration' ),
-				10
-			) : 1200;
-			var percentageType = $thisBar.data( 'percentage-type' );
-			var progressWidth  = $thisBar.width();
-
-			return {
-				color: activeColor,
-				strokeWidth: activeWidth * 100 / progressWidth,
-				trailColor: inactiveColor,
-				trailWidth: inactiveWidth * 100 / progressWidth,
-				svgStyle: {
-					display: 'block',
-					width: '100%',
-				},
-				easing: easing,
-				duration: duration,
-				from: {
-					color: inactiveColor
-				},
-				to: {
-					color: activeColor
-				},
-				step: function ( state, bar ) {
-					var val = Math.round( bar.value() * 100 );
-					$thisBar.find( '.qodef-m-value-inner' ).html( val + '<span class="qodef-m-percentage">%</span>' );
-
-					if ( 'floating-above' === percentageType || 'floating-on' === percentageType ) {
-						$thisBar.find( '.qodef-m-value' )[0].style.left = (val + '%');
-					}
-				},
-			};
-		},
-		initHorizontalBar: function ( $container, data, number, thisBar ) {
-			if ( qodefProgressBar.checkBar( $container ) ) {
-
-				var $bar = new ProgressBar.Line(
-					$container[0],
-					data
-				);
-
-				var enableGradient = thisBar.data( 'gradient-fill' );
-				if ( enableGradient === 'yes' ) {
-					qodefProgressBar.generateGradient( thisBar );
-				}
-
-				var patternImage = thisBar.data( 'pattern' );
-				if ( undefined !== patternImage ) {
-					thisBar.find( 'svg' ).css(
-						'background-image',
-						'url("' + patternImage + '")'
-					);
-				}
-
-				$bar.animate( number );
-			}
-		},
-		checkBar: function ( $container ) {
-			// check if svg is already in container, elementor fix.
-			if ( $container.find( 'svg' ).length ) {
-				return false;
-			}
-
-			return true;
-		},
-		generateGradient: function ( thisBar ) {
-
-			var svgns    = 'http://www.w3.org/2000/svg';
-			var defs     = document.createElementNS(
-				svgns,
-				'defs'
-			);
-			var gradient = document.createElementNS(
-				svgns,
-				'linearGradient'
-			);
-			var stops    = [
-				{ 'color': thisBar.data( 'gradient-start' ), 'offset': '0%', },
-				{ 'color': thisBar.data( 'gradient-end' ), 'offset': '100%', },
-			];
-
-			for ( var i = 0, length = stops.length; i < length; i++ ) {
-				var stop = document.createElementNS(
-					svgns,
-					'stop'
-				);
-				stop.setAttribute(
-					'offset',
-					stops[i].offset
-				);
-				stop.setAttribute(
-					'stop-color',
-					stops[i].color
-				);
-				gradient.appendChild( stop );
-			}
-
-			gradient.id = 'Gradient-' + thisBar.data( 'rand-id' );
-			gradient.setAttribute(
-				'gradientUnits',
-				'userSpaceOnUse'
-			);
-			gradient.setAttribute(
-				'x1',
-				'0'
-			);
-			gradient.setAttribute(
-				'x2',
-				thisBar.data( 'number' ) + '%'
-			);
-			gradient.setAttribute(
-				'y1',
-				'0'
-			);
-			gradient.setAttribute(
-				'y2',
-				'0'
-			);
-			defs.appendChild( gradient );
-
-			thisBar[0].querySelector( '.qodef-m-canvas svg' ).appendChild( defs );
-			thisBar[0].querySelector( '.qodef-m-canvas svg path:nth-child(2)' ).setAttribute(
-				'stroke',
-				'url(#Gradient-' + thisBar.data( 'rand-id' ) + ')'
-			);
-		},
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_horizontal.qodefProgressBar = qodefProgressBar;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_process             = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_process.qodefAppear = qodefAddonsCore.qodefAppear;
 
 })( jQuery );
 
@@ -2956,15 +2771,6 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_circle.qodefProgressBar = qodefProgressBar;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title = {};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title.qodefButton = qodefAddonsCore.qodefButton;
 
 })( jQuery );
 
@@ -3175,6 +2981,15 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_vertical.qodefProgressBar = qodefProgressBar;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title = {};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_section_title.qodefButton = qodefAddonsCore.qodefButton;
 
 })( jQuery );
 
@@ -3575,58 +3390,6 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_tabs_horizontal = {};
-
-	$( document ).ready(
-		function () {
-			qodefTabsHorizontal.init();
-		}
-	);
-
-	var qodefTabsHorizontal = {
-		init: function () {
-			this.holder = $( '.qodef-qi-tabs-horizontal' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefTabsHorizontal.initItems( $( this ) );
-					}
-				);
-			}
-		},
-		initItems: function ( $tabs ) {
-			$tabs.children( '.qodef-tabs-horizontal-content' ).each(
-				function ( index ) {
-					index = index + 1;
-
-					var $that    = $( this ),
-						link     = $that.attr( 'id' ),
-						$navItem = $that.parent().find( '.qodef-tabs-horizontal-navigation li:nth-child(' + index + ') a' ),
-						navLink  = $navItem.attr( 'href' );
-
-					link = '#' + link;
-
-					if ( link.indexOf( navLink ) > -1 ) {
-						$navItem.attr(
-							'href',
-							link
-						);
-					}
-				}
-			);
-
-			$tabs.addClass( 'qodef--init' ).tabs();
-		}
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_tabs_horizontal.qodefTabsHorizontal = qodefTabsHorizontal;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_tabs_vertical = {};
 
 	$( document ).ready(
@@ -3679,8 +3442,237 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider             = {};
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_horizontal = {};
+
+	$( document ).ready(
+		function () {
+			qodefProgressBar.init();
+		}
+	);
+
+	/**
+	 * Init progress bar - horizontal shortcode functionality
+	 */
+	var qodefProgressBar = {
+		init: function () {
+			this.holder = $( '.qodef-qi-progress-bar-horizontal' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefProgressBar.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+
+			qodefAddonsCore.qodefIsInViewport.check(
+				$currentItem,
+				function () {
+					$currentItem.addClass( 'qodef--init' );
+
+					var $container = $currentItem.find( '.qodef-m-canvas' ),
+						data       = qodefProgressBar.generateBarData( $currentItem ),
+						number     = $currentItem.data( 'number' ) / 100;
+
+					qodefProgressBar.initHorizontalBar(
+						$container,
+						data,
+						number,
+						$currentItem
+					);
+				}
+			);
+		},
+		generateBarData: function ( $thisBar ) {
+			var activeWidth    = $thisBar.data( 'active-line-width' );
+			var activeColor    = $thisBar.data( 'active-line-color' );
+			var inactiveWidth  = $thisBar.data( 'inactive-line-width' );
+			var inactiveColor  = $thisBar.data( 'inactive-line-color' );
+			var easing         = 'easeInOut';
+			var duration       = typeof $thisBar.data( 'duration' ) !== 'undefined' && $thisBar.data( 'duration' ) !== '' ? parseInt(
+				$thisBar.data( 'duration' ),
+				10
+			) : 1200;
+			var percentageType = $thisBar.data( 'percentage-type' );
+			var progressWidth  = $thisBar.width();
+
+			return {
+				color: activeColor,
+				strokeWidth: activeWidth * 100 / progressWidth,
+				trailColor: inactiveColor,
+				trailWidth: inactiveWidth * 100 / progressWidth,
+				svgStyle: {
+					display: 'block',
+					width: '100%',
+				},
+				easing: easing,
+				duration: duration,
+				from: {
+					color: inactiveColor
+				},
+				to: {
+					color: activeColor
+				},
+				step: function ( state, bar ) {
+					var val = Math.round( bar.value() * 100 );
+					$thisBar.find( '.qodef-m-value-inner' ).html( val + '<span class="qodef-m-percentage">%</span>' );
+
+					if ( 'floating-above' === percentageType || 'floating-on' === percentageType ) {
+						$thisBar.find( '.qodef-m-value' )[0].style.left = (val + '%');
+					}
+				},
+			};
+		},
+		initHorizontalBar: function ( $container, data, number, thisBar ) {
+			if ( qodefProgressBar.checkBar( $container ) ) {
+
+				var $bar = new ProgressBar.Line(
+					$container[0],
+					data
+				);
+
+				var enableGradient = thisBar.data( 'gradient-fill' );
+				if ( enableGradient === 'yes' ) {
+					qodefProgressBar.generateGradient( thisBar );
+				}
+
+				var patternImage = thisBar.data( 'pattern' );
+				if ( undefined !== patternImage ) {
+					thisBar.find( 'svg' ).css(
+						'background-image',
+						'url("' + patternImage + '")'
+					);
+				}
+
+				$bar.animate( number );
+			}
+		},
+		checkBar: function ( $container ) {
+			// check if svg is already in container, elementor fix.
+			if ( $container.find( 'svg' ).length ) {
+				return false;
+			}
+
+			return true;
+		},
+		generateGradient: function ( thisBar ) {
+
+			var svgns    = 'http://www.w3.org/2000/svg';
+			var defs     = document.createElementNS(
+				svgns,
+				'defs'
+			);
+			var gradient = document.createElementNS(
+				svgns,
+				'linearGradient'
+			);
+			var stops    = [
+				{ 'color': thisBar.data( 'gradient-start' ), 'offset': '0%', },
+				{ 'color': thisBar.data( 'gradient-end' ), 'offset': '100%', },
+			];
+
+			for ( var i = 0, length = stops.length; i < length; i++ ) {
+				var stop = document.createElementNS(
+					svgns,
+					'stop'
+				);
+				stop.setAttribute(
+					'offset',
+					stops[i].offset
+				);
+				stop.setAttribute(
+					'stop-color',
+					stops[i].color
+				);
+				gradient.appendChild( stop );
+			}
+
+			gradient.id = 'Gradient-' + thisBar.data( 'rand-id' );
+			gradient.setAttribute(
+				'gradientUnits',
+				'userSpaceOnUse'
+			);
+			gradient.setAttribute(
+				'x1',
+				'0'
+			);
+			gradient.setAttribute(
+				'x2',
+				thisBar.data( 'number' ) + '%'
+			);
+			gradient.setAttribute(
+				'y1',
+				'0'
+			);
+			gradient.setAttribute(
+				'y2',
+				'0'
+			);
+			defs.appendChild( gradient );
+
+			thisBar[0].querySelector( '.qodef-m-canvas svg' ).appendChild( defs );
+			thisBar[0].querySelector( '.qodef-m-canvas svg path:nth-child(2)' ).setAttribute(
+				'stroke',
+				'url(#Gradient-' + thisBar.data( 'rand-id' ) + ')'
+			);
+		},
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_progress_bar_horizontal.qodefProgressBar = qodefProgressBar;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_tabs_horizontal = {};
+
+	$( document ).ready(
+		function () {
+			qodefTabsHorizontal.init();
+		}
+	);
+
+	var qodefTabsHorizontal = {
+		init: function () {
+			this.holder = $( '.qodef-qi-tabs-horizontal' );
+
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						qodefTabsHorizontal.initItems( $( this ) );
+					}
+				);
+			}
+		},
+		initItems: function ( $tabs ) {
+			$tabs.children( '.qodef-tabs-horizontal-content' ).each(
+				function ( index ) {
+					index = index + 1;
+
+					var $that    = $( this ),
+						link     = $that.attr( 'id' ),
+						$navItem = $that.parent().find( '.qodef-tabs-horizontal-navigation li:nth-child(' + index + ') a' ),
+						navLink  = $navItem.attr( 'href' );
+
+					link = '#' + link;
+
+					if ( link.indexOf( navLink ) > -1 ) {
+						$navItem.attr(
+							'href',
+							link
+						);
+					}
+				}
+			);
+
+			$tabs.addClass( 'qodef--init' ).tabs();
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_tabs_horizontal.qodefTabsHorizontal = qodefTabsHorizontal;
 
 })( jQuery );
 
@@ -3849,6 +3841,14 @@
 (function ( $ ) {
 	'use strict';
 
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider             = {};
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_testimonials_slider.qodefSwiper = qodefAddonsCore.qodefSwiper;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_typeout_text = {};
 
 	$( document ).ready(
@@ -3919,6 +3919,31 @@
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_typeout_text.qodefTypeoutText = qodefTypeoutText;
 
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	var shortcode = 'qi_addons_for_elementor_blog_list';
+
+	qodefAddonsCore.shortcodes[shortcode] = {};
+
+	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+	qodefAddonsCore.shortcodes[shortcode].qodefMasonryLayout = qodefAddonsCore.qodefMasonryLayout;
+	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
+
+})( jQuery );
+
+(function ( $ ) {
+	'use strict';
+
+	var shortcode = 'qi_addons_for_elementor_blog_slider';
+
+	qodefAddonsCore.shortcodes[shortcode] = {};
+
+	qodefAddonsCore.shortcodes[shortcode].qodefSwiper        = qodefAddonsCore.qodefSwiper;
+	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
+	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
 })( jQuery );
 
 (function ( $ ) {
@@ -4148,26 +4173,75 @@
 (function ( $ ) {
 	'use strict';
 
-	var shortcode = 'qi_addons_for_elementor_blog_list';
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button = {};
 
-	qodefAddonsCore.shortcodes[shortcode] = {};
+	$( document ).ready(
+		function () {
+			changeViewCart.init();
+		}
+	);
 
-	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
-	qodefAddonsCore.shortcodes[shortcode].qodefMasonryLayout = qodefAddonsCore.qodefMasonryLayout;
-	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
+	var changeViewCart = {
+		init: function () {
+			this.holder = $( '.qodef-qi-woo-shortcode-add-to-cart' );
 
-})( jQuery );
+			if ( this.holder.length ) {
+				this.holder.each(
+					function () {
+						changeViewCart.initItem( $( this ) );
+					}
+				);
+			}
+		},
+		initItem: function ( $currentItem ) {
+			qodefAddonsCore.shortcodes.qi_addons_for_elementor_button.qodefButton.init( $currentItem );
 
-(function ( $ ) {
-	'use strict';
+			$( 'body' ).on(
+				'added_to_cart',
+				function () {
+					var $viewButton = $currentItem.find( '.added_to_cart:not(.qodef-qi-button)' );
 
-	var shortcode = 'qi_addons_for_elementor_blog_slider';
+					if ( $viewButton.length ) {
+						var $addButton      = $viewButton.siblings( '.add_to_cart_button' ),
+							classesToRemove = ['button', 'product_type_simple', 'add_to_cart_button', 'ajax_add_to_cart', 'added'],
+							classesCount    = classesToRemove.length,
+							classes         = $addButton.attr( 'class' ),
+							$border         = $addButton.find( '.qodef-m-border' ),
+							$innerBorder    = $addButton.find( '.qodef-m-inner-border' ),
+							$icon           = $addButton.find( '.qodef-m-icon' );
 
-	qodefAddonsCore.shortcodes[shortcode] = {};
+						for ( var i = 0; i < classesCount; i++ ) {
+							classes = classes.replace( classesToRemove[i], '' );
+						}
 
-	qodefAddonsCore.shortcodes[shortcode].qodefSwiper        = qodefAddonsCore.qodefSwiper;
-	qodefAddonsCore.shortcodes[shortcode].qodefLightboxPopup = qodefAddonsCore.qodefLightboxPopup;
-	qodefAddonsCore.shortcodes[shortcode].qodefButton        = qodefAddonsCore.qodefButton;
+						$viewButton.addClass( classes );
+						$viewButton.wrapInner( '<span class="qodef-m-text">' );
+
+						if ( $border.length ) {
+							var $duplicateBorder = $border.clone();
+
+							$viewButton.append( $duplicateBorder );
+						}
+
+						if ( $icon.length ) {
+							var $duplicateIcon = $icon.clone();
+
+							$viewButton.append( $duplicateIcon );
+						}
+
+						if ( $innerBorder.length ) {
+							var $duplicateInner = $innerBorder.clone();
+
+							$viewButton.append( $duplicateInner );
+						}
+					}
+				}
+			);
+		}
+	};
+
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button.changeViewCart = changeViewCart;
+
 })( jQuery );
 
 (function ( $ ) {
@@ -4253,74 +4327,45 @@
 (function ( $ ) {
 	'use strict';
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button = {};
-
 	$( document ).ready(
 		function () {
-			changeViewCart.init();
+			qodefInteractiveBannerReveal.init();
 		}
 	);
 
-	var changeViewCart = {
+	var qodefInteractiveBannerReveal = {
 		init: function () {
-			this.holder = $( '.qodef-qi-woo-shortcode-add-to-cart' );
+			this.holder = $( '.qodef-qi-interactive-banner' );
 
 			if ( this.holder.length ) {
 				this.holder.each(
 					function () {
-						changeViewCart.initItem( $( this ) );
+						qodefInteractiveBannerReveal.initItem( $( this ) );
 					}
 				);
 			}
 		},
 		initItem: function ( $currentItem ) {
-			qodefAddonsCore.shortcodes.qi_addons_for_elementor_button.qodefButton.init( $currentItem );
+			if ( $currentItem.hasClass( 'qodef-layout--revealing' ) ) {
+				var $text      = $currentItem.find( '.qodef-m-content-inner > .qodef-m-text' ),
+					$button    = $currentItem.find( '.qodef-m-button' ),
+					textHeight = $text.outerHeight( true );
 
-			$( 'body' ).on(
-				'added_to_cart',
-				function () {
-					var $viewButton = $currentItem.find( '.added_to_cart:not(.qodef-qi-button)' );
-
-					if ( $viewButton.length ) {
-						var $addButton      = $viewButton.siblings( '.add_to_cart_button' ),
-							classesToRemove = ['button', 'product_type_simple', 'add_to_cart_button', 'ajax_add_to_cart', 'added'],
-							classesCount    = classesToRemove.length,
-							classes         = $addButton.attr( 'class' ),
-							$border         = $addButton.find( '.qodef-m-border' ),
-							$innerBorder    = $addButton.find( '.qodef-m-inner-border' ),
-							$icon           = $addButton.find( '.qodef-m-icon' );
-
-						for ( var i = 0; i < classesCount; i++ ) {
-							classes = classes.replace( classesToRemove[i], '' );
-						}
-
-						$viewButton.addClass( classes );
-						$viewButton.wrapInner( '<span class="qodef-m-text">' );
-
-						if ( $border.length ) {
-							var $duplicateBorder = $border.clone();
-
-							$viewButton.append( $duplicateBorder );
-						}
-
-						if ( $icon.length ) {
-							var $duplicateIcon = $icon.clone();
-
-							$viewButton.append( $duplicateIcon );
-						}
-
-						if ( $innerBorder.length ) {
-							var $duplicateInner = $innerBorder.clone();
-
-							$viewButton.append( $duplicateInner );
-						}
-					}
-				}
-			);
-		}
+				$button.css(
+					'transform',
+					'translateY(-' + textHeight + 'px) translateZ(0)'
+				);
+				setTimeout(
+					function () {
+						$currentItem.addClass( 'qodef--visible' );
+					},
+					400
+				);
+			}
+		},
 	};
 
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_add_to_cart_button.changeViewCart = changeViewCart;
+	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefInteractiveBannerReveal = qodefInteractiveBannerReveal;
 
 })( jQuery );
 
@@ -4366,51 +4411,6 @@
 	};
 
 	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefInteractiveBannerFromBottom = qodefInteractiveBannerFromBottom;
-
-})( jQuery );
-
-(function ( $ ) {
-	'use strict';
-
-	$( document ).ready(
-		function () {
-			qodefInteractiveBannerReveal.init();
-		}
-	);
-
-	var qodefInteractiveBannerReveal = {
-		init: function () {
-			this.holder = $( '.qodef-qi-interactive-banner' );
-
-			if ( this.holder.length ) {
-				this.holder.each(
-					function () {
-						qodefInteractiveBannerReveal.initItem( $( this ) );
-					}
-				);
-			}
-		},
-		initItem: function ( $currentItem ) {
-			if ( $currentItem.hasClass( 'qodef-layout--revealing' ) ) {
-				var $text      = $currentItem.find( '.qodef-m-content-inner > .qodef-m-text' ),
-					$button    = $currentItem.find( '.qodef-m-button' ),
-					textHeight = $text.outerHeight( true );
-
-				$button.css(
-					'transform',
-					'translateY(-' + textHeight + 'px) translateZ(0)'
-				);
-				setTimeout(
-					function () {
-						$currentItem.addClass( 'qodef--visible' );
-					},
-					400
-				);
-			}
-		},
-	};
-
-	qodefAddonsCore.shortcodes.qi_addons_for_elementor_interactive_banner.qodefInteractiveBannerReveal = qodefInteractiveBannerReveal;
 
 })( jQuery );
 
