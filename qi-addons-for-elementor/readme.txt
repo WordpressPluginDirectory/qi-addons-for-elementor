@@ -4,7 +4,7 @@ Tags: elementor, elementor addons, elementor widgets, elementor elements, addons
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,7 +87,8 @@ https://www.youtube.com/watch?v=WT8ngVYlJ_0&list=PLNypD600o6nK_5QYh--5K6B0ObmgVt
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/image-slider/" target="_blank">Image Slider</a> - Easily adjustable sliders for displaying images in a number of exciting ways</li>
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/masonry-image-gallery/" target="_blank">Masonry Image Gallery</a> - Compose compelling galleries with masonry layouts</li>
     <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/pinterest-image-gallery/" target="_blank">Pinterest Image Gallery</a> - Easily create striking pinterest-styled galleries</li>
-    <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/" target="_blank">Dual Image with Content </a> - Eye-catching two-image sections with some additional content</li>
+    <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/dual-image-with-content/" target="_blank">Dual Image with Content </a> - Eye-catching two-image sections with some additional content</li>
+    <li><a href="https://qodeinteractive.com/qi-addons-for-elementor/content-slider/" target="_blank">Content Slider </a> - Easily create fully adjustable image and textual content slider presentations</li>
 </ul>
 
 <h4>Creative Addons:</h4>
@@ -342,6 +343,9 @@ From wordpress.org
 
 
 == Changelog ==
+
+= 1.9.2 - 27-06-2025 =
+- Improved Cross Site Scripting (XSS) vulnerability
 
 = 1.9.1 - 05-06-2025 =
 - Minor improvements
